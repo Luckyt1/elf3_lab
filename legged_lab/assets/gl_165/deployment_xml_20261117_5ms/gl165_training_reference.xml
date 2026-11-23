@@ -1,0 +1,316 @@
+<mujoco model="gl165_deploy">
+  <compiler angle="radian" inertiafromgeom="false" fusestatic="false" balanceinertia="false" meshdir="." />
+  <option timestep="0.005" integrator="implicitfast" gravity="0 0 -9.81" iterations="100" tolerance="1e-8" />
+  <default>
+    <default class="gl165">
+      <geom type="mesh" contype="0" conaffinity="0" group="2" density="0" material="silver" />
+      <site group="5" rgba="1 0 0 1" />
+      <default class="collision">
+        <geom contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" />
+      </default>
+    </default>
+  </default>
+  <visual>
+    <global offwidth="960" offheight="720" />
+  </visual>
+  <asset>
+    <material name="silver" rgba="0.7 0.7 0.7 1" />
+    <material name="black" rgba="0.2 0.2 0.2 1" />
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072" />
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300" />
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2" />
+    <mesh name="base_link_original" file="../meshes/base_link.STL" />
+    <mesh name="waist_z_link_original" file="../meshes/waist_z_link.STL" />
+    <mesh name="waist_x_link_original" file="../meshes/waist_x_link.STL" />
+    <mesh name="body_y_link_original" file="meshes/body_y_link.obj" />
+    <mesh name="neck_z_link_original" file="../meshes/neck_z_link.STL" />
+    <mesh name="head_y_link_original" file="../meshes/head_y_link.STL" />
+    <mesh name="lshouder_y_link_original" file="../meshes/lshouder_y_link.STL" />
+    <mesh name="lshouder_x_link_original" file="../meshes/lshouder_x_link.STL" />
+    <mesh name="lbigarm_z_link_original" file="../meshes/lbigarm_z_link.STL" />
+    <mesh name="lsmallarm_y_link_original" file="../meshes/lsmallarm_y_link.STL" />
+    <mesh name="lsmallarm_x_link_original" file="../meshes/lsmallarm_x_link.STL" />
+    <mesh name="lwrist_z_link_original" file="../meshes/lwrist_z_link.STL" />
+    <mesh name="lwrist_y_link_original" file="../meshes/lwrist_y_link.STL" />
+    <mesh name="rshouder_y_link_original" file="../meshes/rshouder_y_link.STL" />
+    <mesh name="rshouder_x_link_original" file="../meshes/rshouder_x_link.STL" />
+    <mesh name="rbigarm_z_link_original" file="../meshes/rbigarm_z_link.STL" />
+    <mesh name="rsmallarm_y_link_original" file="../meshes/rsmallarm_y_link.STL" />
+    <mesh name="rsmallarm_x_link_original" file="../meshes/rsmallarm_x_link.STL" />
+    <mesh name="rwrist_z_link_original" file="../meshes/rwrist_z_link.STL" />
+    <mesh name="rwrist_y_link_original" file="../meshes/rwrist_y_link.STL" />
+    <mesh name="lhip_y_link_original" file="../meshes/lhip_y_link.STL" />
+    <mesh name="lbigleg_x_link_original" file="../meshes/lbigleg_x_link.STL" />
+    <mesh name="lbigleg_z_link_original" file="../meshes/lbigleg_z_link.STL" />
+    <mesh name="lsmallleg_y_link_original" file="../meshes/lsmallleg_y_link.STL" />
+    <mesh name="lfoot_y_link_original" file="../meshes/lfoot_y_link.STL" />
+    <mesh name="lfoot_x_link_original" file="../meshes/lfoot_x_link.STL" />
+    <mesh name="rhip_y_link_original" file="../meshes/rhip_y_link.STL" />
+    <mesh name="rbigleg_x_link_original" file="../meshes/rbigleg_x_link.STL" />
+    <mesh name="rbigleg_z_link_original" file="../meshes/rbigleg_z_link.STL" />
+    <mesh name="rsmallleg_y_link_original" file="../meshes/rsmallleg_y_link.STL" />
+    <mesh name="rfoot_y_link_original" file="../meshes/rfoot_y_link.STL" />
+    <mesh name="rfoot_x_link_original" file="../meshes/rfoot_x_link.STL" />
+  </asset>
+  <worldbody>
+    <light pos="0 -3 5" dir="0 0 -1" diffuse="0.8 0.8 0.8" />
+    <geom name="floor" type="plane" size="100 100 0.1" friction="1 0.005 0.0001" material="groundplane" />
+    <body name="base_link" childclass="gl165" pos="0 0 1.02">
+      <inertial pos="8.83597909304825E-05 -1.54557940467261E-08 -0.0607463306094482" mass="5.256" fullinertia="0.0402270179357264 0.0139305269705904 0.0364239694025037 -2.24121993258413e-06 4.98394103633669e-05 1.09190928434394e-09" />
+      <freejoint name="world_joint" />
+      <geom name="base_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="base_link_original" material="silver" />
+      <geom name="base_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="base_link_original" class="collision" />
+      <body name="waist_z_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+        <inertial pos="-0.0116425322406696 6.81128413604978E-05 0.0109522625432816" mass="0.281471215030869" fullinertia="0.000174600939721098 0.000262924740501624 0.000368717233486979 -1.91794001950114e-07 4.38442288829081e-05 -4.08411972007731e-08" />
+        <joint name="waist_z_joint" type="hinge" axis="0 0 1" range="-2.914700 2.914700" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+        <geom name="waist_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="waist_z_link_original" material="silver" />
+        <geom name="waist_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="waist_z_link_original" class="collision" />
+        <body name="waist_x_link" pos="-0.000651723519288119 0 0.0279618856806488" quat="1.0 0.0 0.0 0.0">
+          <inertial pos="2.65182880104195E-07 -2.92831908379901E-09 -7.14095449438901E-12" mass="0.0656352877892484" fullinertia="1.00567155651614e-05 2.16062480732555e-05 3.01851180082733e-05 -4.28316546109993e-16 -5.11814684616032e-16 -4.34029823245822e-19" />
+          <joint name="waist_x_joint" type="hinge" axis="1 0 0" range="-0.698132 0.698132" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+          <geom name="waist_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="waist_x_link_original" material="silver" />
+          <geom name="waist_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="waist_x_link_original" class="collision" />
+          <body name="body_y_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+            <inertial pos="0.00062544 -0.00054135 0.21534119" mass="8.3181" fullinertia="0.16376211 0.12774523 0.05243709 -2.208e-05 0.00130993 -0.0001001" />
+            <joint name="waist_y_joint" type="hinge" axis="0 1 0" range="-0.698132 0.698132" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+            <geom name="body_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="body_y_link_original" material="silver" />
+            <geom name="body_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="body_y_link_original" class="collision" />
+            <body name="neck_z_link" pos="-0.00500000321459021 0.000483619688263184 0.461259241958485" quat="1.0 0.0 0.0 0.0">
+              <inertial pos="3.60261528823696E-06 -0.00571530622653496 0.0294574478541181" mass="0.268534796488221" fullinertia="0.000113684844351763 0.000116368493212673 9.76042013685913e-05 -5.37656054615115e-09 -5.58567355938893e-06 3.57114226179602e-06" />
+              <geom name="neck_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="neck_z_link_original" material="silver" />
+              <geom name="neck_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="neck_z_link_original" class="collision" />
+              <body name="head_y_link" pos="0 0 0.0339999999874377" quat="0.9999999999076307 1.359186183691311e-05 0.0 0.0">
+                <inertial pos="0.0583566006808208 0.00587368679774632 0.083130515438615" mass="0.19" fullinertia="0.000184800153516252 2.97133272134574e-05 0.000196815940858957 5.52698192383372e-08 -2.53114422439717e-06 1.83395825435865e-06" />
+                <geom name="head_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="head_y_link_original" material="silver" />
+                <geom name="head_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="head_y_link_original" class="collision" />
+              </body>
+            </body>
+            <body name="lshouder_y_link" pos="0 0.129487067801289 0.334503878032099" quat="0.9999999999076307 1.359185994423191e-05 0.0 0.0">
+              <inertial pos="0.00175587795780636 0.0503823356917313 3.37909809716994E-05" mass="0.867" fullinertia="0.000674678217004428 0.000532152898962004 0.000629359074401863 -1.58891476864123e-06 -3.43682652533127e-07 4.18342554093305e-06" />
+              <joint name="lshouder_y_joint" type="hinge" axis="0 1 0" range="-2.914700 2.914700" damping="0" armature="0.239662294" actuatorfrcrange="-60.0 60.0" />
+              <geom name="lshouder_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lshouder_y_link_original" material="silver" />
+              <geom name="lshouder_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lshouder_y_link_original" class="collision" />
+              <body name="lshouder_x_link" pos="0 0.0530001468400078 0" quat="1.0 0.0 0.0 0.0">
+                <inertial pos="0.00311529556003382 -4.64476510096479E-08 -0.0726892284797033" mass="0.620286722467835" fullinertia="0.000579718939263318 0.00061363129842935 0.000345714892141184 4.82071259122357e-07 -0.000111069848568496 2.61582649256703e-08" />
+                <joint name="lshouder_x_joint" type="hinge" axis="1 0 0" range="-0.087266 2.617994" damping="0" armature="0.239662294" actuatorfrcrange="-60.0 60.0" />
+                <geom name="lshouder_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lshouder_x_link_original" material="silver" />
+                <geom name="lshouder_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lshouder_x_link_original" class="collision" />
+                <body name="lbigarm_z_link" pos="0 0 -0.0589844158149737" quat="0.9999999999076307 -1.359186183693801e-05 0.0 0.0">
+                  <inertial pos="-0.00121784087764752 0.00626633421045816 -0.124217917792565" mass="0.809" fullinertia="0.00270547672045397 0.00278560086849628 0.000514026833395751 1.08317567453162e-05 1.75388198528993e-05 2.5535498073001e-05" />
+                  <joint name="lshouder_z_joint" type="hinge" axis="0 -2.71837227644989E-05 0.999999999630523" range="-2.792527 2.792527" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                  <geom name="lbigarm_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lbigarm_z_link_original" material="silver" />
+                  <geom name="lbigarm_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lbigarm_z_link_original" class="collision" />
+                  <body name="lsmallarm_y_link" pos="0 0 -0.156053997917795" quat="0.9999999999076307 1.359186138349491e-05 0.0 0.0">
+                    <inertial pos="0.0610038106448076 0.00537018118559105 2.08088460641908E-09" mass="0.7165" fullinertia="0.000409492917347137 0.000712628633354521 0.00078113010189786 0.000174571101998449 7.52770687294121e-08 4.77129435963835e-07" />
+                    <joint name="lelbow_y_joint" type="hinge" axis="0 1 0" range="-0.401426 2.356194" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                    <geom name="lsmallarm_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lsmallarm_y_link_original" material="silver" />
+                    <geom name="lsmallarm_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lsmallarm_y_link_original" class="collision" />
+                    <body name="lsmallarm_x_link" pos="0.0497361108190082 0 0" quat="1.0 0.0 0.0 0.0">
+                      <inertial pos="0.105490431728684 0.00232915711732744 -5.48514887846623E-05" mass="0.625660969045974" fullinertia="0.00025679160123613 0.00131082105281083 0.00136615222452575 -1.18362986154911e-05 -2.92980201924231e-06 2.17999912107869e-08" />
+                      <joint name="lwrist_x_joint" type="hinge" axis="1 0 0" range="-2.792527 2.792527" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                      <geom name="lsmallarm_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lsmallarm_x_link_original" material="silver" />
+                      <geom name="lsmallarm_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lsmallarm_x_link_original" class="collision" />
+                      <body name="lwrist_z_link" pos="0.200237856762991 0.000580540424387987 -3.13348209584619E-05" quat="0.9999999918869776 0.0 0.00012738149284866954 0.0">
+                        <inertial pos="6.50287412806705E-09 -0.00627996238811687 3.78205020892041E-05" mass="0.0064" fullinertia="4.75478191708302e-07 3.15446169770952e-07 3.01892393054075e-07 4.83293445136857e-13 7.01894110113986e-14 1.93959421534013e-10" />
+                        <joint name="lwrist_z_joint" type="hinge" axis="0 0 1" range="-0.698132 0.698132" damping="0" armature="0.0051125" actuatorfrcrange="-6.0 6.0" />
+                        <geom name="lwrist_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lwrist_z_link_original" material="silver" />
+                        <geom name="lwrist_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lwrist_z_link_original" class="collision" />
+                        <body name="lwrist_y_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                          <inertial pos="0.0129705866823288 -0.0049526559919707 0.000157898879396483" mass="0.036" fullinertia="1.32954773927752e-05 7.34759771653042e-06 1.12781575380373e-05 -2.71778571837684e-06 2.93667488132026e-09 1.05250850806334e-07" />
+                          <joint name="lwrist_y_joint" type="hinge" axis="0 0.999999999999952 0" range="-0.698132 0.698132" damping="0" armature="0.0051125" actuatorfrcrange="-6.0 6.0" />
+                          <geom name="lwrist_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lwrist_y_link_original" material="silver" />
+                          <geom name="lwrist_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lwrist_y_link_original" class="collision" />
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="rshouder_y_link" pos="0 -0.129487067801289 0.334503878032099" quat="0.9999999999076307 -1.3591859944231911e-05 0.0 0.0">
+              <inertial pos="0.00175587795780636 -0.0503823356917313 3.37909809716994E-05" mass="0.867" fullinertia="0.000674678217004428 0.000532152898962004 0.000629359074401863 1.58891476864123e-06 -3.43682652533127e-07 -4.18342554093305e-06" />
+              <joint name="rshouder_y_joint" type="hinge" axis="0 1 0" range="-2.914700 2.914700" damping="0" armature="0.239662294" actuatorfrcrange="-60.0 60.0" />
+              <geom name="rshouder_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rshouder_y_link_original" material="silver" />
+              <geom name="rshouder_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rshouder_y_link_original" class="collision" />
+              <body name="rshouder_x_link" pos="0 -0.0530001468400078 0" quat="1.0 0.0 0.0 0.0">
+                <inertial pos="0.00311529556003382 4.64476510096479E-08 -0.0726892284797033" mass="0.620286722467835" fullinertia="0.000579718939263318 0.00061363129842935 0.000345714892141184 -4.82071259122357e-07 -0.000111069848568496 -2.61582649256703e-08" />
+                <joint name="rshouder_x_joint" type="hinge" axis="1 0 0" range="-2.617994 0.087266" damping="0" armature="0.239662294" actuatorfrcrange="-60.0 60.0" />
+                <geom name="rshouder_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rshouder_x_link_original" material="silver" />
+                <geom name="rshouder_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rshouder_x_link_original" class="collision" />
+                <body name="rbigarm_z_link" pos="0 0 -0.0589844158149737" quat="0.9999999999076307 1.359186183693801e-05 0.0 0.0">
+                  <inertial pos="-0.00121784087764752 -0.00626633421045816 -0.124217917792565" mass="0.809" fullinertia="0.00270547672045397 0.00278560086849628 0.000514026833395751 -1.08317567453162e-05 1.75388198528993e-05 -2.5535498073001e-05" />
+                  <joint name="rshouder_z_joint" type="hinge" axis="0 -2.71837227644989E-05 0.999999999630523" range="-2.792527 2.792527" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                  <geom name="rbigarm_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rbigarm_z_link_original" material="silver" />
+                  <geom name="rbigarm_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rbigarm_z_link_original" class="collision" />
+                  <body name="rsmallarm_y_link" pos="0 0 -0.156053997917795" quat="0.9999999999076307 -1.3591861383494908e-05 0.0 0.0">
+                    <inertial pos="0.0610038106448076 -0.00537018118559105 2.08088460641908E-09" mass="0.7165" fullinertia="0.000409492917347137 0.000712628633354521 0.00078113010189786 -0.000174571101998449 7.52770687294121e-08 -4.77129435963835e-07" />
+                    <joint name="relbow_y_joint" type="hinge" axis="0 1 0" range="-0.401426 2.356194" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                    <geom name="rsmallarm_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rsmallarm_y_link_original" material="silver" />
+                    <geom name="rsmallarm_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rsmallarm_y_link_original" class="collision" />
+                    <body name="rsmallarm_x_link" pos="0.0497361108190082 0 0" quat="1.0 0.0 0.0 0.0">
+                      <inertial pos="0.105490431728684 -0.00232915711732744 -5.48514887846623E-05" mass="0.625660969045974" fullinertia="0.00025679160123613 0.00131082105281083 0.00136615222452575 1.18362986154911e-05 -2.92980201924231e-06 -2.17999912107869e-08" />
+                      <joint name="rwrist_x_joint" type="hinge" axis="1 0 0" range="-2.792527 2.792527" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                      <geom name="rsmallarm_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rsmallarm_x_link_original" material="silver" />
+                      <geom name="rsmallarm_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rsmallarm_x_link_original" class="collision" />
+                      <body name="rwrist_z_link" pos="0.200237856762991 -0.000580540424387987 -3.13348209584619E-05" quat="0.9999999918869776 0.0 0.00012738149284866954 0.0">
+                        <inertial pos="6.50287412806705E-09 0.00627996238811687 3.78205020892041E-05" mass="0.0064" fullinertia="4.75478191708302e-07 3.15446169770952e-07 3.01892393054075e-07 -4.83293445136857e-13 7.01894110113986e-14 -1.93959421534013e-10" />
+                        <joint name="rwrist_z_joint" type="hinge" axis="0 0 1" range="-0.698132 0.698132" damping="0" armature="0.0051125" actuatorfrcrange="-6.0 6.0" />
+                        <geom name="rwrist_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rwrist_z_link_original" material="silver" />
+                        <geom name="rwrist_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rwrist_z_link_original" class="collision" />
+                        <body name="rwrist_y_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                          <inertial pos="0.0129705866823288 0.0049526559919707 0.000157898879396483" mass="0.036" fullinertia="1.32954773927752e-05 7.34759771653042e-06 1.12781575380373e-05 2.71778571837684e-06 2.93667488132026e-09 -1.05250850806334e-07" />
+                          <joint name="rwrist_y_joint" type="hinge" axis="0 0.999999999999952 0" range="-0.698132 0.698132" damping="0" armature="0.0051125" actuatorfrcrange="-6.0 6.0" />
+                          <geom name="rwrist_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rwrist_y_link_original" material="silver" />
+                          <geom name="rwrist_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rwrist_y_link_original" class="collision" />
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="lhip_y_link" pos="0 0.100097487679728 -0.0874141522654299" quat="0.9848077530121859 -0.17364817766705595 0.0 0.0">
+        <inertial pos="0.0174655551723511 0.0354028000403323 -0.0923287810246187" mass="1.9317" fullinertia="0.0053414864030873 0.00425149465469181 0.00162293438378686 -5.83939879047303e-05 0.000560776173385591 0.000358934422465223" />
+        <joint name="lhip_y_joint" type="hinge" axis="0 1 0" range="-2.932153 2.932153" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+        <geom name="lhip_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lhip_y_link_original" material="silver" />
+        <geom name="lhip_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lhip_y_link_original" class="collision" />
+        <body name="lbigleg_x_link" pos="0 0.0371356895638042 -0.109324846460014" quat="0.984807753012186 0.17364817766705548 0.0 0.0">
+          <inertial pos="0.00504590682740136 1.06708456006872E-07 -0.0666379720835251" mass="1.77164432747209" fullinertia="0.00204173774597558 0.00216476998903971 0.00259251947899291 -1.00426356591939e-08 -0.000372457134929614 -1.75620176510231e-08" />
+          <joint name="lhip_x_joint" type="hinge" axis="1 0 0" range="-0.698132 1.134464" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+          <geom name="lbigleg_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lbigleg_x_link_original" material="silver" />
+          <geom name="lbigleg_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lbigleg_x_link_original" class="collision" />
+          <body name="lbigleg_z_link" pos="0 0 -0.0697504685044009" quat="1.0 0.0 0.0 0.0">
+            <inertial pos="-6.17785741159813E-05 -0.0226515869957054 -0.103897018864969" mass="2.736" fullinertia="0.00910535519789006 0.0109661685224859 0.00409237147552757 1.24746654927492e-06 1.2051359332235e-05 -0.000852407655524767" />
+            <joint name="lhip_z_joint" type="hinge" axis="0 0 1" range="-3.019420 3.019420" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+            <geom name="lbigleg_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lbigleg_z_link_original" material="silver" />
+            <geom name="lbigleg_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lbigleg_z_link_original" class="collision" />
+            <body name="lsmallleg_y_link" pos="0 -0.0190004205826948 -0.247032985649362" quat="1.0 0.0 0.0 0.0">
+              <inertial pos="-0.00793748437368423 -0.000129231611873568 -0.167593296028872" mass="2.4962" fullinertia="0.0314574241606835 0.0313168036007406 0.00123026652302802 -3.5029204276416e-07 0.000747914245497593 -1.17075142459919e-05" />
+              <joint name="lknee_y_joint" type="hinge" axis="0 1 0" range="0.0 1.727876" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+              <geom name="lsmallleg_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lsmallleg_y_link_original" material="silver" />
+              <geom name="lsmallleg_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lsmallleg_y_link_original" class="collision" />
+              <body name="lfoot_y_link" pos="0 -0.00032130667522498 -0.475763005684111" quat="1.0 0.0 0.0 0.0">
+                <inertial pos="-9.95159258904887E-09 -0.000260554988009365 -4.28573487809558E-09" mass="0.0281601216408969" fullinertia="7.72740033159782e-06 1.10925702468256e-06 7.95428049900327e-06 -4.0449559868224e-12 2.81636346579726e-12 6.99400037630325e-13" />
+                <joint name="lankle_y_joint" type="hinge" axis="0 1 0" range="-0.872665 0.872665" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                <geom name="lfoot_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lfoot_y_link_original" material="silver" />
+                <geom name="lfoot_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="lfoot_y_link_original" class="collision" />
+                <body name="lfoot_x_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                  <inertial pos="0.0229611441899308 7.99626485632754E-06 -0.022357042546076" mass="0.260131947766109" fullinertia="9.16744410431536e-05 0.000794640965082687 0.00081650730123334 -2.68508982990398e-07 6.09697356855273e-05 1.47925259275018e-08" />
+                  <joint name="lankle_x_joint" type="hinge" axis="1 0 0" range="-0.872665 0.872665" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                  <geom name="lfoot_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="lfoot_x_link_original" material="silver" />
+                  <geom name="lfoot_x_link_collision_0" pos="-0.05 0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_1" pos="-0.05 -0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_2" pos="0.11 0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_3" pos="0.11 -0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_4" pos="0.05 -0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_5" pos="0.05 0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_6" pos="0.145 0 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_7" pos="-0.085 0 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="lfoot_x_link_collision_8" pos="0.10 0 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <site name="l_foot" pos="0 0 0" size="0.01" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="rhip_y_link" pos="0 -0.100097487679728 -0.0874141522654299" quat="0.9848077530121859 0.17364817766705595 0.0 0.0">
+        <inertial pos="0.0174655551723511 -0.0354028000403323 -0.0923287810246187" mass="1.9317" fullinertia="0.0053414864030873 0.00425149465469181 0.00162293438378686 5.83939879047303e-05 0.000560776173385591 -0.000358934422465223" />
+        <joint name="rhip_y_joint" type="hinge" axis="0 1 0" range="-2.932153 2.932153" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+        <geom name="rhip_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rhip_y_link_original" material="silver" />
+        <geom name="rhip_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rhip_y_link_original" class="collision" />
+        <body name="rbigleg_x_link" pos="0 -0.0371356895638042 -0.109324846460014" quat="0.984807753012186 -0.17364817766705548 0.0 0.0">
+          <inertial pos="0.00504590682740136 -1.06708456006872E-07 -0.0666379720835251" mass="1.77164432747209" fullinertia="0.00204173774597558 0.00216476998903971 0.00259251947899291 1.00426356591939e-08 -0.000372457134929614 1.75620176510231e-08" />
+          <joint name="rhip_x_joint" type="hinge" axis="1 0 0" range="-1.134464 0.698132" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+          <geom name="rbigleg_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rbigleg_x_link_original" material="silver" />
+          <geom name="rbigleg_x_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rbigleg_x_link_original" class="collision" />
+          <body name="rbigleg_z_link" pos="0 0 -0.0697504685044009" quat="1.0 0.0 0.0 0.0">
+            <inertial pos="-6.17785741159813E-05 0.0226515869957054 -0.103897018864969" mass="2.736" fullinertia="0.00910535519789006 0.0109661685224859 0.00409237147552757 -1.24746654927492e-06 1.2051359332235e-05 0.000852407655524767" />
+            <joint name="rhip_z_joint" type="hinge" axis="0 0 1" range="-3.019420 3.019420" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+            <geom name="rbigleg_z_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rbigleg_z_link_original" material="silver" />
+            <geom name="rbigleg_z_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rbigleg_z_link_original" class="collision" />
+            <body name="rsmallleg_y_link" pos="0 0.0190004205826948 -0.247032985649362" quat="1.0 0.0 0.0 0.0">
+              <inertial pos="-0.00793748437368423 0.000129231611873568 -0.167593296028872" mass="2.4962" fullinertia="0.0314574241606835 0.0313168036007406 0.00123026652302802 3.5029204276416e-07 0.000747914245497593 1.17075142459919e-05" />
+              <joint name="rknee_y_joint" type="hinge" axis="0 1 0" range="0.0 1.727876" damping="0" armature="0.1095095987712" actuatorfrcrange="-180.0 180.0" />
+              <geom name="rsmallleg_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rsmallleg_y_link_original" material="silver" />
+              <geom name="rsmallleg_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rsmallleg_y_link_original" class="collision" />
+              <body name="rfoot_y_link" pos="0 0.00032130667522498 -0.475763005684111" quat="1.0 0.0 0.0 0.0">
+                <inertial pos="-9.95159258904887E-09 0.000260554988009365 -4.28573487809558E-09" mass="0.0281601216408969" fullinertia="7.72740033159782e-06 1.10925702468256e-06 7.95428049900327e-06 4.0449559868224e-12 2.81636346579726e-12 -6.99400037630325e-13" />
+                <joint name="rankle_y_joint" type="hinge" axis="0 1 0" range="-0.872665 0.872665" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                <geom name="rfoot_y_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rfoot_y_link_original" material="silver" />
+                <geom name="rfoot_y_link_collision_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="mesh" mesh="rfoot_y_link_original" class="collision" />
+                <body name="rfoot_x_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                  <inertial pos="0.0229611441899308 -7.99626485632754E-06 -0.022357042546076" mass="0.260131947766109" fullinertia="9.16744410431536e-05 0.000794640965082687 0.00081650730123334 2.68508982990398e-07 6.09697356855273e-05 -1.47925259275018e-08" />
+                  <joint name="rankle_x_joint" type="hinge" axis="1 0 0" range="-0.872665 0.872665" damping="0" armature="0.0133091413389" actuatorfrcrange="-45.0 45.0" />
+                  <geom name="rfoot_x_link_visual_0" pos="0 0 0" quat="1.0 0.0 0.0 0.0" contype="0" conaffinity="0" group="2" friction="1 0.005 0.0001" type="mesh" mesh="rfoot_x_link_original" material="silver" />
+                  <geom name="rfoot_x_link_collision_0" pos="-0.05 0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_1" pos="-0.05 -0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_2" pos="0.11 0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_3" pos="0.11 -0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_4" pos="0.05 -0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_5" pos="0.05 0.0375 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_6" pos="0.145 0 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_7" pos="-0.085 0 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <geom name="rfoot_x_link_collision_8" pos="0.10 0 -0.035" quat="1.0 0.0 0.0 0.0" contype="1" conaffinity="1" group="3" rgba="0.2 0.6 0.2 0.3" friction="1 0.005 0.0001" type="sphere" size="0.005" class="collision" />
+                  <site name="r_foot" pos="0 0 0" size="0.01" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <site name="imu_in_torso" pos="0 0 0" size="0.01" />
+      <camera name="tracking" pos="2 -2 0.5" xyaxes="0.707107 0.707107 0 -0.123091 0.123091 0.984732" mode="trackcom" />
+      <light pos="0 0 2" dir="0 0 -1" mode="trackcom" />
+    </body>
+  </worldbody>
+  <contact>
+    <exclude body1="waist_z_link" body2="body_y_link" />
+    <exclude body1="lsmallarm_x_link" body2="lwrist_y_link" />
+    <exclude body1="rsmallarm_x_link" body2="rwrist_y_link" />
+  </contact>
+  <actuator>
+    <motor name="waist_z_joint" joint="waist_z_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="waist_x_joint" joint="waist_x_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="waist_y_joint" joint="waist_y_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="lshouder_y_joint" joint="lshouder_y_joint" gear="1" ctrllimited="true" ctrlrange="-60.0 60.0" forcelimited="true" forcerange="-60.0 60.0" />
+    <motor name="lshouder_x_joint" joint="lshouder_x_joint" gear="1" ctrllimited="true" ctrlrange="-60.0 60.0" forcelimited="true" forcerange="-60.0 60.0" />
+    <motor name="lshouder_z_joint" joint="lshouder_z_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="lelbow_y_joint" joint="lelbow_y_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="lwrist_x_joint" joint="lwrist_x_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="lwrist_z_joint" joint="lwrist_z_joint" gear="1" ctrllimited="true" ctrlrange="-6.0 6.0" forcelimited="true" forcerange="-6.0 6.0" />
+    <motor name="lwrist_y_joint" joint="lwrist_y_joint" gear="1" ctrllimited="true" ctrlrange="-6.0 6.0" forcelimited="true" forcerange="-6.0 6.0" />
+    <motor name="rshouder_y_joint" joint="rshouder_y_joint" gear="1" ctrllimited="true" ctrlrange="-60.0 60.0" forcelimited="true" forcerange="-60.0 60.0" />
+    <motor name="rshouder_x_joint" joint="rshouder_x_joint" gear="1" ctrllimited="true" ctrlrange="-60.0 60.0" forcelimited="true" forcerange="-60.0 60.0" />
+    <motor name="rshouder_z_joint" joint="rshouder_z_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="relbow_y_joint" joint="relbow_y_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="rwrist_x_joint" joint="rwrist_x_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="rwrist_z_joint" joint="rwrist_z_joint" gear="1" ctrllimited="true" ctrlrange="-6.0 6.0" forcelimited="true" forcerange="-6.0 6.0" />
+    <motor name="rwrist_y_joint" joint="rwrist_y_joint" gear="1" ctrllimited="true" ctrlrange="-6.0 6.0" forcelimited="true" forcerange="-6.0 6.0" />
+    <motor name="lhip_y_joint" joint="lhip_y_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="lhip_x_joint" joint="lhip_x_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="lhip_z_joint" joint="lhip_z_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="lknee_y_joint" joint="lknee_y_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="lankle_y_joint" joint="lankle_y_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="lankle_x_joint" joint="lankle_x_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="rhip_y_joint" joint="rhip_y_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="rhip_x_joint" joint="rhip_x_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="rhip_z_joint" joint="rhip_z_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="rknee_y_joint" joint="rknee_y_joint" gear="1" ctrllimited="true" ctrlrange="-180.0 180.0" forcelimited="true" forcerange="-180.0 180.0" />
+    <motor name="rankle_y_joint" joint="rankle_y_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+    <motor name="rankle_x_joint" joint="rankle_x_joint" gear="1" ctrllimited="true" ctrlrange="-45.0 45.0" forcelimited="true" forcerange="-45.0 45.0" />
+  </actuator>
+  <sensor>
+    <gyro name="Body_Gyro" site="imu_in_torso" />
+    <framequat name="Body_Quat" objtype="site" objname="imu_in_torso" />
+    <velocimeter name="imu_lin_vel" site="imu_in_torso" />
+    <accelerometer name="Body_Acc" site="imu_in_torso" />
+  </sensor>
+  <keyframe>
+    <key name="home" qpos="0.0 0.0 1.02 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.15 0.0 0.6 0.0 0.0 0.0 0.0 -0.15 0.0 0.6 0.0 0.0 0.0 -0.2 0.0 0.0 0.4 -0.2 0.0 -0.2 0.0 0.0 0.4 -0.2 0.0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" />
+    <key name="approved_standing" qpos="0.0 0.0 0.9982980628766961 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.1 0.0 1.1 0.0 0.0 0.0 0.0 -0.1 0.0 1.1 0.0 0.0 0.0 -0.315364011971 -0.00517333597433 -0.0560915128826 0.597529351667 -0.300928949319 -0.00278352160397 -0.315364011971 0.00517333597433 0.0560915128826 0.597529351667 -0.300928949319 0.00278352160397" />
+  </keyframe>
+</mujoco>

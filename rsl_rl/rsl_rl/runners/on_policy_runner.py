@@ -419,6 +419,10 @@ class OnPolicyRunner:
             "iter": self.current_learning_iteration,
             "infos": infos,
         }
+        profile = getattr(self.env, "controller_parameters", None)
+        if profile is not None and profile.get("stance_recovery") is not None:
+            # Standalone GL-165 checkpoints with the same network shape can use different XY references.
+            saved_dict["standing_profile"] = profile
         # -- Save RND model if used
         if self.alg.rnd:
             saved_dict["rnd_state_dict"] = self.alg.rnd.state_dict()

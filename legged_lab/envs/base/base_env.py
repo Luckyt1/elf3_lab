@@ -30,11 +30,12 @@ from isaaclab.sim import PhysxCfg, SimulationContext
 from isaaclab.utils.buffers import CircularBuffer, DelayBuffer
 
 from legged_lab.envs.base.base_env_config import BaseEnvCfg
-from legged_lab.utils.env_utils.scene import SceneCfg
 from rsl_rl.env import VecEnv
 
 
 class BaseEnv(VecEnv):
+    scene_cfg_type: type
+
     def __init__(self, cfg: BaseEnvCfg, headless):
         self.cfg: BaseEnvCfg
 
@@ -60,7 +61,7 @@ class BaseEnv(VecEnv):
         )
         self.sim = SimulationContext(sim_cfg)
 
-        scene_cfg = SceneCfg(config=cfg.scene, physics_dt=self.physics_dt, step_dt=self.step_dt)
+        scene_cfg = self.scene_cfg_type(config=cfg.scene, physics_dt=self.physics_dt, step_dt=self.step_dt)
         self.scene = InteractiveScene(scene_cfg)
         self.sim.reset()
 
@@ -95,7 +96,8 @@ class BaseEnv(VecEnv):
 
         self.max_episode_length_s = self.cfg.scene.max_episode_length_s
         self.max_episode_length = np.ceil(self.max_episode_length_s / self.step_dt)
-        self.num_actions = self.robot.data.default_joint_pos.shape[1]
+        self.policy_joint_ids = getattr(self, "policy_joint_ids", list(range(self.robot.num_joints)))
+        self.num_actions = len(self.policy_joint_ids)
         self.clip_actions = self.cfg.normalization.clip_actions
         self.clip_obs = self.cfg.normalization.clip_observations
 
@@ -140,8 +142,8 @@ class BaseEnv(VecEnv):
         ang_vel = robot.data.root_ang_vel_b
         projected_gravity = robot.data.projected_gravity_b
         command = self.command_generator.command
-        joint_pos = robot.data.joint_pos - robot.data.default_joint_pos
-        joint_vel = robot.data.joint_vel - robot.data.default_joint_vel
+        joint_pos = (robot.data.joint_pos - robot.data.default_joint_pos)[:, self.policy_joint_ids]
+        joint_vel = (robot.data.joint_vel - robot.data.default_joint_vel)[:, self.policy_joint_ids]
         action = self.action_buffer._circular_buffer.buffer[:, -1, :]
         current_actor_obs = torch.cat(
             [
@@ -221,16 +223,25 @@ class BaseEnv(VecEnv):
         self.scene.write_data_to_sim()
         self.sim.forward()
 
+    def process_actions(self, actions: torch.Tensor):
+        return actions * self.action_scale + self.robot.data.default_joint_pos
+
+    def apply_external_forces(self):
+        """Optional task-specific forces for this physics substep."""
+
     def step(self, actions: torch.Tensor):
         delayed_actions = self.action_buffer.compute(actions)
 
-        cliped_actions = torch.clip(delayed_actions, -self.clip_actions, self.clip_actions).to(self.device)
-        processed_actions = cliped_actions * self.action_scale + self.robot.data.default_joint_pos
+        actions_to_apply = delayed_actions
+        if self.clip_actions is not None:
+            actions_to_apply = torch.clip(actions_to_apply, -self.clip_actions, self.clip_actions)
+        processed_actions = self.process_actions(actions_to_apply.to(self.device))
 
         for _ in range(self.cfg.sim.decimation):
             self.sim_step_counter += 1
             self.robot.set_joint_position_target(processed_actions)
             self.scene.write_data_to_sim()
+            self.apply_external_forces()
             self.sim.step(render=False)
             self.scene.update(dt=self.physics_dt)
 

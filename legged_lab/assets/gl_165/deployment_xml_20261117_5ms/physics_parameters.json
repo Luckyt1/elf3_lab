@@ -1,0 +1,694 @@
+{
+  "profile": "gl165_xml_armature_20261117_5ms",
+  "source_xml": "source_deployment.xml",
+  "source_xml_sha256": "c6e7493dbeb2fc8fb83116967eb62592a32d20948de1f1dc2e331b63b666bcd0",
+  "source_urdf": "../urdf/gl_165.urdf",
+  "source_urdf_sha256": "150d10ddf5c18a3a5d3ad312061150522bbf1f0f1fa46b502c9712a437f6ce38",
+  "prepared_urdf": "gl_165_xml_physics.urdf",
+  "prepared_urdf_sha256": "cfade07242e1d8a6db758db15863f9f41608db1d2612139ec68798b61257ab7c",
+  "prepared_mujoco_xml": "gl165_training_reference.xml",
+  "prepared_mujoco_xml_sha256": "3dd14fb8ee8f590ea9c231171a9cad26f4b53f46b82fd8ebab542c38ee128d90",
+  "joint_parameters": {
+    "waist_z_joint": {
+      "xml_joint": "waist_z_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -2.9147,
+        2.9147
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.914700",
+        "upper": "2.914700",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "waist_x_joint": {
+      "xml_joint": "waist_x_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.698132,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "0.698132",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "waist_y_joint": {
+      "xml_joint": "waist_y_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.698132,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "0.698132",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "lshouder_y_joint": {
+      "xml_joint": "l_shoulder_y_joint",
+      "armature_kg_m2": 0.239662294,
+      "effort_limit_nm": 60.0,
+      "position_limits_rad": [
+        -2.9147,
+        2.9147
+      ],
+      "velocity_limit_rad_s": 7.3304,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.914700",
+        "upper": "2.914700",
+        "effort": "60.0",
+        "velocity": "7.3304"
+      }
+    },
+    "lshouder_x_joint": {
+      "xml_joint": "l_shoulder_x_joint",
+      "armature_kg_m2": 0.239662294,
+      "effort_limit_nm": 60.0,
+      "position_limits_rad": [
+        -0.087266,
+        2.617994
+      ],
+      "velocity_limit_rad_s": 7.3304,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.087266",
+        "upper": "2.617994",
+        "effort": "60.0",
+        "velocity": "7.3304"
+      }
+    },
+    "lshouder_z_joint": {
+      "xml_joint": "l_shoulder_z_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -2.792527,
+        2.792527
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.792527",
+        "upper": "2.792527",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "lelbow_y_joint": {
+      "xml_joint": "l_elbow_y_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.401426,
+        2.356194
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.401426",
+        "upper": "2.356194",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "lwrist_x_joint": {
+      "xml_joint": "l_wrist_x_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -2.792527,
+        2.792527
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.792527",
+        "upper": "2.792527",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "lwrist_z_joint": {
+      "xml_joint": "l_wrist_z_joint",
+      "armature_kg_m2": 0.0051125,
+      "effort_limit_nm": 6.0,
+      "position_limits_rad": [
+        -0.698132,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 15.1844,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "0.698132",
+        "effort": "6.0",
+        "velocity": "15.1844"
+      }
+    },
+    "lwrist_y_joint": {
+      "xml_joint": "l_wrist_y_joint",
+      "armature_kg_m2": 0.0051125,
+      "effort_limit_nm": 6.0,
+      "position_limits_rad": [
+        -0.698132,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 15.1844,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "0.698132",
+        "effort": "6.0",
+        "velocity": "15.1844"
+      }
+    },
+    "rshouder_y_joint": {
+      "xml_joint": "r_shoulder_y_joint",
+      "armature_kg_m2": 0.239662294,
+      "effort_limit_nm": 60.0,
+      "position_limits_rad": [
+        -2.9147,
+        2.9147
+      ],
+      "velocity_limit_rad_s": 7.3304,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.914700",
+        "upper": "2.914700",
+        "effort": "60.0",
+        "velocity": "7.3304"
+      }
+    },
+    "rshouder_x_joint": {
+      "xml_joint": "r_shoulder_x_joint",
+      "armature_kg_m2": 0.239662294,
+      "effort_limit_nm": 60.0,
+      "position_limits_rad": [
+        -2.617994,
+        0.087266
+      ],
+      "velocity_limit_rad_s": 7.3304,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.617994",
+        "upper": "0.087266",
+        "effort": "60.0",
+        "velocity": "7.3304"
+      }
+    },
+    "rshouder_z_joint": {
+      "xml_joint": "r_shoulder_z_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -2.792527,
+        2.792527
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.792527",
+        "upper": "2.792527",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "relbow_y_joint": {
+      "xml_joint": "r_elbow_y_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.401426,
+        2.356194
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.401426",
+        "upper": "2.356194",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "rwrist_x_joint": {
+      "xml_joint": "r_wrist_x_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -2.792527,
+        2.792527
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.792527",
+        "upper": "2.792527",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "rwrist_z_joint": {
+      "xml_joint": "r_wrist_z_joint",
+      "armature_kg_m2": 0.0051125,
+      "effort_limit_nm": 6.0,
+      "position_limits_rad": [
+        -0.698132,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 15.1844,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "0.698132",
+        "effort": "6.0",
+        "velocity": "15.1844"
+      }
+    },
+    "rwrist_y_joint": {
+      "xml_joint": "r_wrist_y_joint",
+      "armature_kg_m2": 0.0051125,
+      "effort_limit_nm": 6.0,
+      "position_limits_rad": [
+        -0.698132,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 15.1844,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "0.698132",
+        "effort": "6.0",
+        "velocity": "15.1844"
+      }
+    },
+    "lhip_y_joint": {
+      "xml_joint": "l_hip_y_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -2.932153,
+        2.932153
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.932153",
+        "upper": "2.932153",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "lhip_x_joint": {
+      "xml_joint": "l_hip_x_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -0.698132,
+        1.134464
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.698132",
+        "upper": "1.134464",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "lhip_z_joint": {
+      "xml_joint": "l_hip_z_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -3.01942,
+        3.01942
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-3.019420",
+        "upper": "3.019420",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "lknee_y_joint": {
+      "xml_joint": "l_knee_y_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        0.0,
+        1.727876
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "0.0",
+        "upper": "1.727876",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "lankle_y_joint": {
+      "xml_joint": "l_ankle_y_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.872665,
+        0.872665
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.872665",
+        "upper": "0.872665",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "lankle_x_joint": {
+      "xml_joint": "l_ankle_x_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.872665,
+        0.872665
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.872665",
+        "upper": "0.872665",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "rhip_y_joint": {
+      "xml_joint": "r_hip_y_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -2.932153,
+        2.932153
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-2.932153",
+        "upper": "2.932153",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "rhip_x_joint": {
+      "xml_joint": "r_hip_x_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -1.134464,
+        0.698132
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-1.134464",
+        "upper": "0.698132",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "rhip_z_joint": {
+      "xml_joint": "r_hip_z_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        -3.01942,
+        3.01942
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-3.019420",
+        "upper": "3.019420",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "rknee_y_joint": {
+      "xml_joint": "r_knee_y_joint",
+      "armature_kg_m2": 0.1095095987712,
+      "effort_limit_nm": 180.0,
+      "position_limits_rad": [
+        0.0,
+        1.727876
+      ],
+      "velocity_limit_rad_s": 8.3776,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "0.0",
+        "upper": "1.727876",
+        "effort": "180.0",
+        "velocity": "8.3776"
+      }
+    },
+    "rankle_y_joint": {
+      "xml_joint": "r_ankle_y_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.872665,
+        0.872665
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.872665",
+        "upper": "0.872665",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    },
+    "rankle_x_joint": {
+      "xml_joint": "r_ankle_x_joint",
+      "armature_kg_m2": 0.0133091413389,
+      "effort_limit_nm": 45.0,
+      "position_limits_rad": [
+        -0.872665,
+        0.872665
+      ],
+      "velocity_limit_rad_s": 12.5664,
+      "velocity_limit_source": "original GL-165 URDF; MJCF has no joint speed cap",
+      "original_urdf_limits": {
+        "lower": "-0.872665",
+        "upper": "0.872665",
+        "effort": "45.0",
+        "velocity": "12.5664"
+      }
+    }
+  },
+  "fixed_joints": [
+    "head_z_joint",
+    "head_y_joint"
+  ],
+  "foot_contacts": {
+    "lfoot_x_link": [
+      {
+        "position_m": [
+          -0.05,
+          0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          -0.05,
+          -0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.11,
+          0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.11,
+          -0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.05,
+          -0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.05,
+          0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.145,
+          0.0,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          -0.085,
+          0.0,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.1,
+          0.0,
+          -0.035
+        ],
+        "radius_m": 0.005
+      }
+    ],
+    "rfoot_x_link": [
+      {
+        "position_m": [
+          -0.05,
+          0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          -0.05,
+          -0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.11,
+          0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.11,
+          -0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.05,
+          -0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.05,
+          0.0375,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.145,
+          0.0,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          -0.085,
+          0.0,
+          -0.035
+        ],
+        "radius_m": 0.005
+      },
+      {
+        "position_m": [
+          0.1,
+          0.0,
+          -0.035
+        ],
+        "radius_m": 0.005
+      }
+    ]
+  },
+  "physics_dt_s": 0.005,
+  "control_dt_s": 0.02,
+  "source_physics_dt_s": 0.001,
+  "timestep_override": {
+    "source_s": 0.001,
+    "effective_s": 0.005,
+    "reason": "5 ms physics step with a 20 ms policy period."
+  },
+  "mujoco_integrator": "implicitfast",
+  "isaac_actuator": "ImplicitActuatorCfg",
+  "stand_height_m": 0.9952980628766961,
+  "original_stand_height_m": 0.987285,
+  "standing_pose_source": "previous user-approved feet-forward crouched pose; sole height recomputed for XML spheres",
+  "nested_collision_pairs": [
+    [
+      "waist_z_link",
+      "body_y_link"
+    ],
+    [
+      "lsmallarm_x_link",
+      "lwrist_y_link"
+    ],
+    [
+      "rsmallarm_x_link",
+      "rwrist_y_link"
+    ]
+  ],
+  "original_body_masses_com_inertias_verified": 32,
+  "mass_kg": 40.18910947609415,
+  "active_joints": 29,
+  "gains_source": "previously approved ELF3LITE_CFG; XML has no PD gains or action scales",
+  "solver_note": "MuJoCo integrator/iterations have no direct PhysX equivalence; Isaac keeps its existing solver settings",
+  "friction_note": "XML nominal friction 1; retain previously approved training friction randomization",
+  "imu_note": "XML site imu_in_torso is attached to base_link; retain existing pelvis observations"
+}
