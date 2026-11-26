@@ -18,6 +18,8 @@
 
 """Helper functions."""
 
+from .motion_loader import AMPLoader
+from .motion_loader_for_display import AMPLoaderDisplay
 from .utils import (
     Normalizer,
     resolve_nn_activation,
@@ -26,3 +28,8 @@ from .utils import (
     string_to_callable,
     unpad_trajectories,
 )
+
+__all__ = [
+    "AMPLoader",
+    "AMPLoaderDisplay",
+]

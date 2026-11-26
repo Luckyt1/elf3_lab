@@ -16,6 +16,8 @@
 # with additional modifications by the TienKung-Lab Project,
 # and is distributed under the BSD-3-Clause license.
 
+from itertools import repeat
+
 import isaaclab.sim as sim_utils
 import isaacsim.core.utils.torch as torch_utils  # type: ignore
 import numpy as np
@@ -30,11 +32,12 @@ from isaaclab.sim import PhysxCfg, SimulationContext
 from isaaclab.utils.buffers import CircularBuffer, DelayBuffer
 
 from legged_lab.envs.base.base_env_config import BaseEnvCfg
+from legged_lab.utils.env_utils.scene import SceneCfg
 from rsl_rl.env import VecEnv
 
 
 class BaseEnv(VecEnv):
-    scene_cfg_type: type
+    scene_cfg_type = SceneCfg
 
     def __init__(self, cfg: BaseEnvCfg, headless):
         self.cfg: BaseEnvCfg
@@ -229,6 +232,12 @@ class BaseEnv(VecEnv):
     def apply_external_forces(self):
         """Optional task-specific forces for this physics substep."""
 
+    def after_physics_step(self):
+        """Sample task-specific quantities after integrating one physics substep."""
+
+    def physics_joint_targets(self, target):
+        return repeat(target, self.cfg.sim.decimation)
+
     def step(self, actions: torch.Tensor):
         delayed_actions = self.action_buffer.compute(actions)
 
@@ -237,13 +246,14 @@ class BaseEnv(VecEnv):
             actions_to_apply = torch.clip(actions_to_apply, -self.clip_actions, self.clip_actions)
         processed_actions = self.process_actions(actions_to_apply.to(self.device))
 
-        for _ in range(self.cfg.sim.decimation):
+        for target in self.physics_joint_targets(processed_actions):
             self.sim_step_counter += 1
-            self.robot.set_joint_position_target(processed_actions)
+            self.robot.set_joint_position_target(target)
             self.scene.write_data_to_sim()
             self.apply_external_forces()
             self.sim.step(render=False)
             self.scene.update(dt=self.physics_dt)
+            self.after_physics_step()
 
         if not self.headless:
             self.sim.render()

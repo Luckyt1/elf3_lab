@@ -15,3 +15,56 @@
 # This file contains code derived from the RSL-RL, Isaac Lab, and Legged Lab Projects,
 # with additional modifications by the TienKung-Lab Project,
 # and is distributed under the BSD-3-Clause license.
+
+from legged_lab.envs.base.base_env import BaseEnv
+from legged_lab.envs.base.base_env_config import BaseAgentCfg, BaseEnvCfg
+
+
+from legged_lab.envs.tienkung.run_cfg import TienKungRunAgentCfg, TienKungRunFlatEnvCfg
+from legged_lab.envs.tienkung.run_with_sensor_cfg import (
+    TienKungRunWithSensorAgentCfg,
+    TienKungRunWithSensorFlatEnvCfg,
+)
+from legged_lab.envs.tienkung.tienkung_env import TienKungEnv
+from legged_lab.envs.tienkung.walk_cfg import (
+    TienKungWalkAgentCfg,
+    TienKungWalkFlatEnvCfg,
+)
+from legged_lab.envs.tienkung.walk_with_sensor_cfg import (
+    TienKungWalkWithSensorAgentCfg,
+    TienKungWalkWithSensorFlatEnvCfg,
+)
+
+from legged_lab.envs.elf3.elf3_env import Elf3Env
+
+from legged_lab.envs.elf3.walk_cfg import (
+    Elf3WalkAgentCfg,
+    Elf3WalkFlatEnvCfg,
+)
+from legged_lab.envs.elf3_tang.elf3_env import Elf3Env as Elf3TangEnv
+
+
+from legged_lab.utils.task_registry import task_registry
+
+task_registry.register("walk", TienKungEnv, TienKungWalkFlatEnvCfg(), TienKungWalkAgentCfg())
+task_registry.register("run", TienKungEnv, TienKungRunFlatEnvCfg(), TienKungRunAgentCfg())
+task_registry.register(
+    "walk_with_sensor", TienKungEnv, TienKungWalkWithSensorFlatEnvCfg(), TienKungWalkWithSensorAgentCfg()
+)
+task_registry.register(
+    "run_with_sensor", TienKungEnv, TienKungRunWithSensorFlatEnvCfg(), TienKungRunWithSensorAgentCfg()
+)
+
+task_registry.register("walk_elf3", Elf3Env, Elf3WalkFlatEnvCfg(), Elf3WalkAgentCfg())
+
+
+from legged_lab.envs.elf3_tang.walk_cfg import (
+    Elf3WalkTangFlatEnvCfg,
+    Elf3WalkTangAgentCfg,
+)
+task_registry.register("walk_elf3_tang", Elf3TangEnv, Elf3WalkTangFlatEnvCfg(), Elf3WalkTangAgentCfg())
+
+from legged_lab.envs.gl_165.stand_cfg import Gl165StandAgentCfg, Gl165StandEnvCfg
+from legged_lab.envs.gl_165.stand_env import Gl165StandEnv
+
+task_registry.register("stand_gl165", Gl165StandEnv, Gl165StandEnvCfg(), Gl165StandAgentCfg())

@@ -7,20 +7,26 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from legged_lab.assets.gl_165.model import portable_digest
+
+def arm_substep_targets(previous, target, substeps):
+    """Reach the next arm keyframe on the last physics step of the control interval."""
+    delta = target - previous
+    for step in range(1, substeps):
+        yield previous + (step / substeps) * delta
+    yield target
 
 
 class ArmMotionDatabase:
     def __init__(self, path, joint_names, nominal, asset_signature, num_envs, device, step_dt):
         self.path = Path(path)
         if not self.path.is_file():
-            raise FileNotFoundError(f"Missing GL-165 arm motion database: {self.path}")
+            raise FileNotFoundError(f"Build arm data first with prepare_gl165_arm_dataset.py: {self.path}")
         self.sha256 = hashlib.sha256(self.path.read_bytes()).hexdigest()
         with np.load(self.path, allow_pickle=False) as archive:
             self.metadata = json.loads(str(archive["metadata"]))
             if list(archive["joint_names"]) != list(joint_names):
                 raise ValueError("Arm database joint order does not match this robot")
-            if portable_digest(self.metadata["asset_signature"]) != portable_digest(asset_signature):
+            if self.metadata["asset_signature"] != asset_signature:
                 raise ValueError("Arm database is stale: regenerate it for the current GL-165 asset and pose")
             if abs(float(archive["control_dt"]) - step_dt) > 1e-9:
                 raise ValueError("Arm database sampling rate does not match the control timestep")

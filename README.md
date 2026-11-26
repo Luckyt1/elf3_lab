@@ -1,89 +1,47 @@
-# GL-165 站立抗扰动训练
+# GL-165 站立训练 · 11.26 V1.0 37000
 
-## 11.26 V1.0 37000
+仓库根目录是训练出 `model_37000.pt` 的代码。它来自 2026 年 11 月 25 日 23:07 开训时保存的快照。这次训练使用 8 cm 默认站姿、6 cm 静站承重脚位移尺度和固定水平速度扰动。Actor 每 20 ms 读取 54 维观测，堆叠 10 帧后输出 15 维腰腿动作。
 
-本版保存 GL-165 固定水平速度扰动训练的第 37,000 轮。静站时承重脚偏离参考落点的奖励尺度为 6 cm，默认两脚足底内缘净距为 8 cm。9 组零指令、无外推摆臂回放均未检测到自发迈步或跌倒。计入停臂后的站立，左右脚最大水平位移分别为 0.86 cm 和 1.65 cm。
-
-- [本版训练源码、运行配置和续训命令](versions/11.26-V1.0-37000/README.md)
-- [训练检查点](versions/11.26-V1.0-37000/model/model_37000.pt) · [ONNX 策略](versions/11.26-V1.0-37000/model/policy.onnx) · [TorchScript 策略](versions/11.26-V1.0-37000/model/policy.pt) · [模型接口](versions/11.26-V1.0-37000/model/policy_interface.json)
-- [第 0 至 37,000 轮训练曲线](versions/11.26-V1.0-37000/curves/training_0_to_37000.png) · [逐轮数据 CSV](versions/11.26-V1.0-37000/curves/training_0_to_37000.csv) · [TensorBoard 数据](versions/11.26-V1.0-37000/curves/tensorboard/)
-- [第 37,000 轮模型的摆臂位移曲线](versions/11.26-V1.0-37000/curves/replay_37000.png) · [逐帧数据 CSV](versions/11.26-V1.0-37000/curves/replay_37000.csv)
-
-本版命令在 `versions/11.26-V1.0-37000/` 目录中运行。
-
-## 11 月 23 日版本（仓库根目录）
-
-这个项目训练 GL-165 在手臂做动作、躯干受到水平推力时维持站立。策略控制腰腿的 15 个关节，双臂的 14 个关节按动作库运动。受推时允许迈步，重新站稳后以新位置为参考。两脚足底内缘的横向净距有 3 cm 软下限。
-
-### 运行环境
-
-训练和评估使用 Linux、Python 3.10、Isaac Sim 4.5、Isaac Lab v2.1.0 和 PyTorch 2.5.1。先激活配好 Isaac Lab 和 Isaac Lab Tasks 的环境，再在本仓库根目录运行以下命令。启动脚本使用当前环境的 `python3`，也可以通过 `GL165_PYTHON` 指定解释器。
-
-```bash
-python3 -m pip install GitPython tensorboard
-```
-
-MuJoCo 回放可以使用独立的 CPU 环境。本项目使用 MuJoCo 3.17.0 验证了回放。
-
-```bash
-python3 -m pip install torch==2.5.1 'numpy<2' GitPython mujoco==3.17.0
-```
-
-### 训练
-
-先用小规模训练检查环境。首次启动时，Isaac Lab 会把仓库内的 URDF 转换为 USD。
-
-```bash
-./scripts/gl165.sh train --headless --num_envs 16 --total_iterations 2 --run_name smoke
-```
-
-正式训练从零开始，使用 4096 个环境和 80000 轮。每 100 轮保存一次检查点，训练曲线、配置、动作库和代码快照位于同一运行目录。
-
-```bash
-./scripts/gl165.sh train --headless --num_envs 4096 --total_iterations 80000 --run_name gl165_540
-tensorboard --logdir logs/stand_gl165
-```
-
-检查点位于 `logs/stand_gl165/<运行目录>/model_<轮次>.pt`。例如，下列命令选出最近一次小规模训练产生的检查点。评估训练效果时，将 `checkpoint` 指向正式训练的模型。
-
-```bash
-checkpoint=$(find logs/stand_gl165 -path '*_smoke/model_1.pt' -print | sort | tail -n 1)
-./scripts/gl165.sh evaluate --headless --num_envs 8 --steps 100 --checkpoint "$checkpoint"
-./scripts/gl165.sh mujoco --checkpoint "$checkpoint" --duration 15 --push
-```
-
-Isaac 评估默认按训练设置抽取两类扰动，使用 `--no_push` 可以测试单纯的手臂动作。MuJoCo 使用检查点中的关节顺序、站姿、动作缩放、软限位和 PD 增益进行独立动力学回放。预览时手臂按完整幅度运动，`--push` 在第 2 秒沿世界系 +Y 方向推一次，力和时长取自检查点所在轮次。加 `--headless` 可以无窗口运行。
-
-### 策略和扰动
-
-| 项目 | 当前配置 |
+| 内容 | 文件 |
 | --- | --- |
-| 策略输入 | 每帧依次为机身角速度 3、机身系重力方向 3、速度指令 3、腰腿相对站姿关节角 15、腰腿关节速度 15、上一次动作 15。关节速度乘 0.1，站立指令为零 |
-| 历史与输出 | 每 20 ms 采样，按从旧到新的顺序堆叠 10 帧，共 540 维，输出 15 个腰腿动作 |
-| 训练时的价值网络 | 每帧 73 维、5 帧历史。价值网络可使用接触和恢复信息，部署策略只使用上表的六类输入 |
-| 物理和手臂 | 物理步长 5 ms，每个策略周期 4 个物理子步，每段手臂过渡 0.6 s |
-| 训练扰动 | 每个环境独立间隔 8–12 s，两类扰动各占 50% |
-| 瞬时速度扰动 | 满强度时世界系 X/Y 各轴最多 ±0.8 m/s，偏航最多 ±0.2 rad/s，前 4800 s 仿真时间由 5% 线性升至满强度 |
-| 持续躯干推力 | 从 20 N、0.3 s 开始，到第 20000 轮线性升至 100 N、1.5 s，之后维持满强度 |
+| 训练入口和 PPO | [启动脚本](scripts/gl165.sh) · [训练主程序](legged_lab/scripts/train.py) · [训练循环](rsl_rl/rsl_rl/runners/on_policy_runner.py) · [PPO](rsl_rl/rsl_rl/algorithms/ppo.py) |
+| 训练任务 | [站姿、奖励权重、推扰和手臂配置](legged_lab/envs/gl_165/stand_cfg.py) · [站立环境](legged_lab/envs/gl_165/stand_env.py) · [奖励公式](legged_lab/envs/gl_165/rewards.py) |
+| 训练资产 | [URDF、MuJoCo 模型和网格](legged_lab/assets/gl_165/urdf_261123_2_5ms_stance8cm/) · [训练用手臂动作库](legged_lab/envs/gl_165/datasets/arm_disturbance_overhead_261123_2_5ms_stance8cm.npz) |
+| 第 37,000 轮权重 | [含 Actor、Critic 和 Adam 的检查点](versions/11.26-V1.0-37000/model/model_37000.pt) · [ONNX](versions/11.26-V1.0-37000/model/policy.onnx) · [TorchScript](versions/11.26-V1.0-37000/model/policy.pt) · [模型接口](versions/11.26-V1.0-37000/model/policy_interface.json) |
+| 训练和回放曲线 | [TensorBoard 事件日志](versions/11.26-V1.0-37000/curves/tensorboard/) · [训练曲线](versions/11.26-V1.0-37000/curves/training_0_to_37000.png) · [逐轮 CSV](versions/11.26-V1.0-37000/curves/training_0_to_37000.csv) · [无推摆臂回放](versions/11.26-V1.0-37000/curves/replay_37000.png) |
+| 原始运行记录 | [开训命令](versions/11.26-V1.0-37000/records/launch.json) · [开训时的配置、源码 ZIP 和校验值](versions/11.26-V1.0-37000/logs/stand_gl165/2026-11-25_23-07-34_stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000/params/) |
 
-### 受推后的恢复判定
+## 从根目录训练
 
-训练环境把已知推力或检测到的失稳作为恢复起点。恢复期间停止按原位置给分。推力解除后的 2 s 保护期结束，且以下条件连续满足 0.4 s，环境才把当时的骨盆水平位置设为新站立参考。两个计时可以重叠。
-
-- 左右脚各承受至少 40 N 的竖直载荷。
-- 骨盆水平速度不超过 0.12 m/s，倾角不超过 0.13 rad，横滚和俯仰的合成角速度不超过 0.45 rad/s。
-
-这一判定用于训练评分。实际运行时，策略靠 540 维观测连续输出腰腿动作，无需部署端提供“恢复完成”信号。完整触发条件见[恢复判定代码](legged_lab/assets/gl_165/stance_recovery.py)。
-
-### 代码与资产
-
-- [站立任务配置](legged_lab/envs/gl_165/stand_cfg.py) 包含观测、奖励和扰动课程。
-- [站立环境](legged_lab/envs/gl_165/stand_env.py) 实现动作映射、脚底约束和站稳后的参考位置更新。
-- [机器人模型](legged_lab/assets/gl_165/) 包含训练用 URDF、MuJoCo 模型、几何网格与控制参数。[动作库](legged_lab/envs/gl_165/datasets/) 保存经过校验的手臂目标序列。发布时将来源路径改为相对路径，保留了对应旧检查点的摘要映射。
-- [PPO 实现](rsl_rl/rsl_rl/) 随仓库提供。派生代码保留原作者声明，RSL-RL 的许可见 [LICENSE](rsl_rl/LICENSE)。
-
-在安装了 PyTorch 和 NumPy 的环境中，可以运行模型、扰动、动作连续性与恢复判定的回归测试。
+在 Linux 上激活已配置 Isaac Sim 4.5、Isaac Lab 2.1、Isaac Lab Tasks 和 PyTorch 的 Python 3.10 环境，进入仓库根目录。启动脚本会优先加载本仓库的 `legged_lab` 和 `rsl_rl`。
 
 ```bash
-python3 -m unittest discover -s tests -v
+export GL165_PYTHON="$(command -v python3)"
 ```
+
+按原配置从第 0 轮开始训练。4096 个环境中，512 个固定手臂静站，512 个无推摆臂，3072 个摆臂并每隔 6–12 秒接受一次水平速度扰动。世界系 X、Y 各自均匀抽取 −0.8 至 +0.8 m/s，从开训起采用完整范围。
+
+```bash
+./scripts/gl165.sh train --headless --num_envs 4096 --seed 42 \
+  --xmz-standing --max_iterations 80000 \
+  --run_name stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000
+```
+
+从第 37,001 轮继续训练时，下面的命令会读取已归档的模型、优化器和控制配置，目标累计为 80,000 轮。根目录 `logs/stand_gl165/` 中的原始运行名称链接到版本目录里的检查点，新日志写入独立的运行目录。
+
+```bash
+run=2026-11-25_23-07-34_stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000
+./scripts/gl165.sh train --headless --num_envs 4096 --seed 42 \
+  --resume True --load_run "$run" --checkpoint model_37000.pt \
+  --total_iterations 80000 --run_name stand_6cm_resume37000
+```
+
+## 查看曲线
+
+下面的命令可读取原训练从 0 到 37,000 轮的全部 66 项指标。
+
+```bash
+tensorboard --logdir versions/11.26-V1.0-37000/curves/tensorboard
+```
+
+[版本归档和回放结果](versions/11.26-V1.0-37000/README.md) · [11 月 23 日版本及对应的使用说明](https://github.com/Luckyt1/elf3_lab/tree/9ed9218e2409b3daa5847181a49ca06e8a2cf70c) · [RSL-RL 许可](rsl_rl/LICENSE)

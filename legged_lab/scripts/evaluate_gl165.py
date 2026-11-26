@@ -33,10 +33,9 @@ simulation_app = app_launcher.app
 import torch
 from rsl_rl.runners import OnPolicyRunner
 
-from legged_lab.envs.gl_165.stand_cfg import Gl165StandAgentCfg, Gl165StandEnvCfg
+from legged_lab.envs.gl_165.stand_cfg import Gl165StandAgentCfg, Gl165StandEnvCfg, TorsoForceCfg
 from legged_lab.envs.gl_165.stand_env import Gl165StandEnv
 from legged_lab.envs.gl_165.rewards import feet_heading_error, yaw_from_quat
-from legged_lab.assets.gl_165.model import NESTED_COLLISION_PAIRS, URDF_PATH
 from legged_lab.assets.gl_165.disturbances import MIXED_PUSH, VELOCITY_ONLY, torso_force_parameters
 
 
@@ -47,7 +46,7 @@ def verify_collision_filters(env):
 
     stage = omni.usd.get_context().get_stage()
     pairs = [(joint.find("parent").get("link"), joint.find("child").get("link"))
-             for joint in ET.parse(URDF_PATH).getroot().findall("joint")] + NESTED_COLLISION_PAIRS
+             for joint in ET.parse(env.physics_asset.urdf).getroot().findall("joint")] + env.physics_asset.parameters["nested_collision_pairs"]
     count = 0
     for index in sorted({0, env.num_envs - 1}):
         root = stage.GetPrimAtPath(f"/World/envs/env_{index}/Robot")
@@ -78,6 +77,8 @@ def evaluate():
         if args.torso_force_iteration < 0 or args.push_delta is not None or args.no_push:
             raise ValueError("Select one push test and a nonnegative torso-force iteration")
         cfg.push.mode = MIXED_PUSH
+        if cfg.push.torso_force is None:
+            cfg.push.torso_force = TorsoForceCfg()
         cfg.push.torso_force.event_probability = 1.0
     cfg.push.enabled = not args.no_push
     cfg.push.curriculum_enabled = False

@@ -26,6 +26,8 @@ from isaaclab.terrains.terrain_generator_cfg import TerrainGeneratorCfg
 from isaaclab.utils import configclass
 
 import legged_lab.mdp as mdp
+from legged_lab.sensors.camera import TiledCameraCfg
+from legged_lab.sensors.lidar import LidarCfg
 
 
 @configclass
@@ -53,6 +55,8 @@ class BaseSceneCfg:
     terrain_generator: TerrainGeneratorCfg = None
     max_init_terrain_level: int = 5
     height_scanner: HeightScannerCfg = HeightScannerCfg()
+    lidar: LidarCfg = LidarCfg()
+    depth_camera: TiledCameraCfg = TiledCameraCfg()
 
 
 @configclass

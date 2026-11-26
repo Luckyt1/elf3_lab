@@ -4,7 +4,7 @@ import math
 
 import torch
 
-from legged_lab.assets.gl_165.disturbances import torso_force_parameters
+from legged_lab.assets.gl_165.disturbances import MIXED_PUSH, torso_force_parameters
 
 
 def update_foot_plant_mask(deadline, step, recovery_steps, velocity_event, torso_force):
@@ -55,6 +55,13 @@ class TorsoForce:
         self.remaining.sub_(1).clamp_(min=0)
 
 
+def apply_push_outside_quiet_envs(env, env_ids):
+    ids = env_ids[env_ids >= env.no_push_env_count]
+    if len(ids):
+        push = apply_mixed_push if env.cfg.push.mode == MIXED_PUSH else apply_velocity_push
+        push(env, ids)
+
+
 def apply_mixed_push(env, env_ids):
     cfg = env.cfg.push.torso_force
     use_force = torch.rand(len(env_ids), device=env.device) < cfg.event_probability
@@ -74,14 +81,17 @@ def velocity_push_scale(cfg, simulated_seconds):
     return cfg.initial_scale + (1.0 - cfg.initial_scale) * progress
 
 
-def apply_velocity_push(env, env_ids):
-    # Import after Isaac Sim is running, as with the other Isaac Lab events.
-    from isaaclab.envs.mdp.events import push_by_setting_velocity
-
-    scale = env.push_scale()
-    ranges = {axis: (low * scale, high * scale)
-              for axis, (low, high) in env.cfg.push.velocity_ranges.items()}
+def apply_velocity_push(env, env_ids, *, delta_w=None):
     velocity_before = env.robot.data.root_vel_w[env_ids].clone()
-    push_by_setting_velocity(env, env_ids, ranges)
+    if delta_w is None:
+        from isaaclab.envs.mdp.events import push_by_setting_velocity
+
+        scale = env.push_scale()
+        ranges = {axis: (low * scale, high * scale)
+                  for axis, (low, high) in env.cfg.push.velocity_ranges.items()}
+        push_by_setting_velocity(env, env_ids, ranges)
+    else:
+        # Replay the same world-frame COM increments on multiple checkpoints.
+        env.robot.write_root_velocity_to_sim(velocity_before + delta_w, env_ids=env_ids)
     env.push_delta_w[env_ids] = env.robot.data.root_vel_w[env_ids] - velocity_before
     env.push_applied[env_ids] = True

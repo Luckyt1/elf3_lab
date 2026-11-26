@@ -1,7 +1,7 @@
 """Asset and disturbance checks; run using python -m unittest discover -s tests -v."""
 
-import hashlib
 import importlib.util
+import json
 import math
 from pathlib import Path
 import re
@@ -30,24 +30,32 @@ model = load_file("gl165_model", "legged_lab/assets/gl_165/model.py")
 pushes = load_file("gl165_pushes", "legged_lab/envs/gl_165/pushes.py")
 stance = load_file("gl165_stance", "legged_lab/assets/gl_165/stance_recovery.py")
 rewards = load_file("gl165_rewards", "legged_lab/envs/gl_165/rewards.py")
+prepare = load_file("gl165_prepare", "legged_lab/scripts/prepare_gl165.py")
 arm_motion = load_file("gl165_arm_motion", "legged_lab/envs/gl_165/arm_motion.py")
+controller_audit = load_file("gl165_controller_audit", "legged_lab/scripts/audit_gl165_controller.py")
 
 
 class AssetTests(unittest.TestCase):
     def setUp(self):
         self.root = ET.parse(model.URDF_PATH).getroot()
 
-    def test_packaged_motion_and_model_match_original_checkpoints(self):
-        path = ROOT / "legged_lab/envs/gl_165/datasets/arm_disturbance_overhead_xml_5ms_v5.npz"
-        original_model = "92461d2dc797c2a6ac9c658f2d7bb85b092075065cf570903f7a78c468a4ed45"
-        original_motion = "219a78557cdca817c1335e6012741086dbdc39d42a6217f7afbb771ec91636e6"
-        asset_id = model.motion_asset_signature()
-        self.assertEqual(model.portable_digest(original_model), asset_id)
-        self.assertEqual(model.portable_digest(original_motion), hashlib.sha256(path.read_bytes()).hexdigest())
-        nominal = torch.tensor([[model.DEFAULT_JOINT_POS[n] for n in model.ARM_JOINT_NAMES]])
-        database = arm_motion.ArmMotionDatabase(path, model.ARM_JOINT_NAMES, nominal, asset_id, 1, "cpu", .02)
-        self.assertEqual(database.metadata["segment_duration_s"], .6)
-        self.assertEqual(model.portable_digest("unrecognized"), "unrecognized")
+    def test_updated_cad_dynamics_and_meshes(self):
+        import hashlib
+        physics = model.PHYSICS_PARAMETERS
+        source = model.PHYSICS_DIR / physics["source_urdf_copy"]
+        self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(), physics["source_urdf_sha256"])
+        links = {link.get("name"): link for link in self.root.findall("link")}
+        for cad in ET.parse(source).findall("link[inertial]"):
+            link = links[physics["cad_link_to_training_link"][cad.get("name")]]
+            for tag in ("mass", "inertia", "origin"):
+                self.assertEqual(link.find(f"inertial/{tag}").attrib, cad.find(f"inertial/{tag}").attrib)
+            mesh = Path(link.find("visual/geometry/mesh").get("filename"))
+            self.assertEqual(mesh.name, Path(cad.find("visual/geometry/mesh").get("filename")).name)
+            self.assertEqual(hashlib.sha256((model.URDF_PATH.parent / mesh).read_bytes()).hexdigest(),
+                             physics["source_mesh_sha256"][mesh.name])
+        legacy = model.load_physics(model.LEGACY_PHYSICS_PROFILE)
+        self.assertNotEqual(physics["source_urdf_sha256"], legacy.parameters["source_urdf_sha256"])
+        self.assertAlmostEqual(physics["mass_kg"], 43.22284735813295)
 
     def test_floating_tree_and_mesh_paths(self):
         links = {x.get("name") for x in self.root.findall("link")}
@@ -75,6 +83,15 @@ class AssetTests(unittest.TestCase):
         self.assertEqual(len(policy), 15)
         self.assertFalse(policy.intersection(model.ARM_JOINT_NAMES))
 
+    def test_gains_and_named_scales_match_elf3_and_deployment(self):
+        if not controller_audit.DEFAULT_DEPLOYMENT_ROOT.is_dir():
+            self.skipTest("User-supplied deployment source is not available on this machine")
+        report = controller_audit.build_report()
+        self.assertEqual(report["errors"], [])
+        self.assertEqual(report["matched_pd_joints"], 29)
+        self.assertEqual(report["matched_policy_action_scales"], 15)
+        self.assertTrue(report["deployment_adapter_required"])
+
     def test_control_lookup_rejects_missing_names_and_has_no_nonpolicy_scales(self):
         with self.assertRaises(ValueError):
             model.joint_control_parameters("missing_joint")
@@ -83,6 +100,25 @@ class AssetTests(unittest.TestCase):
             self.assertGreater(kp, 0)
             self.assertGreater(kd, 0)
             self.assertEqual(scale is not None, bool(re.fullmatch(model.POLICY_JOINT_PATTERN, name)), name)
+
+    def test_preparation_preserves_original_dynamics(self):
+        source = ROOT.parent / "data/gl_165_URDF/gl_165.urdf"
+        if not source.is_file():
+            self.skipTest("Original source asset is not available on this machine")
+        before = source.read_bytes()
+        with tempfile.TemporaryDirectory() as temp:
+            output = prepare.prepare(source, Path(temp))
+            converted = ET.parse(output).getroot()
+            original = ET.fromstring(before)
+            for tag in ("joint", "link"):
+                for element in converted.findall(tag):
+                    other = original.find(f"{tag}[@name='{element.get('name')}']")
+                    self.assertIsNotNone(other)
+                    # Mesh paths and formatting may change; dynamics must not.
+                    for path in ("origin", "axis", "limit", "inertial/origin", "inertial/mass", "inertial/inertia"):
+                        if element.find(path) is not None:
+                            self.assertEqual(element.find(path).attrib, other.find(path).attrib)
+        self.assertEqual(source.read_bytes(), before)
 
     def test_nominal_pose_places_both_soles_on_ground(self):
         def rotation(axis, angle):
@@ -103,6 +139,8 @@ class AssetTests(unittest.TestCase):
                 joint_r = joint_r @ rotation(list(map(float, joint.find("axis").get("xyz").split())),
                                              model.DEFAULT_JOINT_POS[joint.get("name")])
             poses[joint.find("child").get("link")] = (parent_r @ joint_r, parent_p + parent_r @ offset)
+        centres = []
+        edges = []
         for name in model.FEET:
             rotation_w, position_w = poses[name]
             contacts = self.root.findall(f"link[@name='{name}']/collision")
@@ -111,6 +149,20 @@ class AssetTests(unittest.TestCase):
                        - float(c.find('geometry/sphere').get('radius')) for c in contacts]
             self.assertAlmostEqual(min(heights), 0.0, places=6)
             self.assertGreater(rotation_w[2, 2], 0.9999, name)
+            points = np.array([np.fromstring(c.find('origin').get('xyz'), sep=' ') for c in contacts])
+            radii = np.array([float(c.find('geometry/sphere').get('radius')) for c in contacts])
+            world = points @ rotation_w.T + position_w
+            edges.append(((world[:, 1] - radii).min(), (world[:, 1] + radii).max()))
+            points[:, 2] -= radii
+            centres.append(position_w + rotation_w @ ((points.min(axis=0) + points.max(axis=0)) / 2))
+        self.assertAlmostEqual(centres[0][0] - centres[1][0], 0.0, places=6)
+        self.assertAlmostEqual(edges[0][0] - edges[1][1], .08, places=6)
+
+    def test_old_stance_uses_its_recorded_arm_asset_signature(self):
+        historical = model.load_physics(model.CURRENT_PHYSICS_PROFILE)
+        report = ROOT / "legged_lab/envs/gl_165/datasets/arm_disturbance_overhead_261123_2_5ms.json"
+        self.assertEqual(model.motion_asset_signature(historical), json.loads(report.read_text())["asset_signature"])
+        self.assertNotEqual(historical.default_joint_pos, model.DEFAULT_JOINT_POS)
 
     def test_xml_armature_and_fixed_head_provenance(self):
         import hashlib
@@ -145,9 +197,9 @@ class PushTests(unittest.TestCase):
 
     def test_torso_force_curriculum_endpoints_midpoint_and_plateau(self):
         cfg = SimpleNamespace(initial_force_n=20., final_force_n=100., initial_duration_s=.3,
-                              final_duration_s=1.5, full_iteration=20000)
-        for iteration, force, duration in ((0, 20., .3), (10000, 60., .9),
-                                          (20000, 100., 1.5), (79999, 100., 1.5)):
+                              final_duration_s=.8, full_iteration=20000)
+        for iteration, force, duration in ((0, 20., .3), (10000, 60., .55),
+                                          (20000, 100., .8), (79999, 100., .8)):
             magnitude, length = pushes.torso_force_parameters(cfg, iteration)
             self.assertAlmostEqual(magnitude, force)
             self.assertAlmostEqual(length, duration)
@@ -180,6 +232,7 @@ class PushTests(unittest.TestCase):
         robot.root_physx_view = SimpleNamespace(apply_forces_and_torques_at_position=apply)
         pulse = pushes.TorsoForce(robot, 1, .005)
         pulse.start(torch.tensor([0, 2]), 20., .3)
+        pulse.start(torch.tensor([1]), 100., .8)
         pulse.reset(torch.tensor([2]))
         target = pulse.force_w[0].clone()
         self.assertAlmostEqual(target.norm().item(), 20., places=4)
@@ -190,7 +243,7 @@ class PushTests(unittest.TestCase):
             t = 2 * torch.cross(xyz, force, dim=-1)
             return force + quat[:, :1] * t + torch.cross(xyz, t, dim=-1)
         with patch.dict(sys.modules, {"isaaclab.utils.math": SimpleNamespace(quat_rotate_inverse=inverse)}):
-            for step in range(61):
+            for step in range(161):
                 if step == 30:
                     robot.data.body_quat_w[:, 1] = torch.tensor([2**-.5, 0., 0., 2**-.5])
                 pulse.apply(robot)
@@ -198,8 +251,10 @@ class PushTests(unittest.TestCase):
         torch.testing.assert_close(f[:30, 0, 1], target.expand(30, 3))
         rotated = torch.stack((target[1], -target[0], target[2]))
         torch.testing.assert_close(f[30:60, 0, 1], rotated.expand(30, 3), atol=5e-6, rtol=1e-5)
+        self.assertEqual(f[60:, 0, 1].count_nonzero().item(), 0)
+        torch.testing.assert_close(f[:160, 1, 1].norm(dim=-1), torch.full((160,), 100.))
         self.assertEqual(f[-1].count_nonzero().item(), 0)
-        self.assertEqual(f[:, 1:].count_nonzero().item() + f[:, :, 0].count_nonzero().item(), 0)
+        self.assertEqual(f[:, 2].count_nonzero().item() + f[:, :, 0].count_nonzero().item(), 0)
 
     def test_evaluation_full_strength_and_disabled_baseline(self):
         self.cfg.curriculum_enabled = False
@@ -226,6 +281,23 @@ class PushTests(unittest.TestCase):
         torch.testing.assert_close(env.push_delta_w[selected], delta.expand(2, -1))
         self.assertEqual(env.push_delta_w[1].count_nonzero().item(), 0)
         self.assertEqual(env.push_applied.tolist(), [True, False, True])
+
+    def test_repeated_world_xy_velocity_delta_adds_to_current_velocity(self):
+        velocity = torch.tensor([[.3, -.2, .5, .4, .2, -.6], [1., 2., 3., 4., 5., 6.]])
+        original = velocity.clone()
+        ids = torch.tensor([0])
+        delta = torch.tensor([[.8, -.7, 0., 0., 0., 0.]])
+        def write_root(value, env_ids):
+            velocity[env_ids] = value
+        env = SimpleNamespace(robot=SimpleNamespace(data=SimpleNamespace(root_vel_w=velocity),
+                                                    write_root_velocity_to_sim=write_root),
+                              push_delta_w=torch.zeros_like(velocity), push_applied=torch.zeros(2, dtype=torch.bool))
+        for _ in range(2):
+            pushes.apply_velocity_push(env, ids, delta_w=delta)
+        torch.testing.assert_close(velocity[ids], original[ids] + 2 * delta)
+        torch.testing.assert_close(velocity[1], original[1])
+        torch.testing.assert_close(env.push_delta_w[ids], delta)
+        self.assertEqual(env.push_applied.tolist(), [True, False])
 
 
 class StanceRecoveryTests(unittest.TestCase):
@@ -281,11 +353,157 @@ class StanceRecoveryTests(unittest.TestCase):
 
 
 class RewardTests(unittest.TestCase):
-    def test_upper_gap_cost_only_after_balance(self):
+    def test_standing_gap_and_stagger_count_voluntary_motion(self):
+        env = SimpleNamespace(sole_gap_m=torch.tensor([.0281, .0581, .12, .15, .15]),
+                              stagger_error_m=torch.tensor([.06, .03, .08, .06, .06]),
+                              quiet_gap_active=torch.tensor([True, True, True, True, False]))
+        torch.testing.assert_close(-.08 * rewards.quiet_sole_gap(env, .0581, .12, .03),
+                                   torch.tensor([-.04, 0., 0., -.04, 0.]))
+        torch.testing.assert_close(-.08 * rewards.quiet_foot_stagger(env, .03, .03),
+                                   torch.tensor([-.04, 0., -.05, -.04, 0.]))
+        ticks = torch.full((5,), 99)
+        pushed = torch.tensor([False, False, True, False, False])
+        recovering = torch.tensor([False, False, True, True, True])
+        prior_push = torch.tensor([False, False, False, True, False])
+        valid = torch.tensor([False, True, False, False, False])
+        ticks, prior_push, active = stance.advance_gap_timer(ticks, prior_push, pushed, recovering, valid)
+        self.assertEqual(ticks.tolist(), [100, 0, 0, 0, 100])
+        self.assertEqual(active.tolist(), [True, True, False, False, True])
+        ticks, _, _ = stance.advance_gap_timer(ticks, prior_push, pushed & False, recovering & False, valid)
+        self.assertEqual(ticks.tolist(), [101, 0, 1, 1, 101])
+
+    def test_quiet_footprint_cost_after_sliding_or_lifting(self):
+        xy = torch.zeros(1, 2, 2)
+        moved = xy.clone()
+        moved[..., 0] += .02
+        load = torch.full((1, 2), 100.)
+        quiet = torch.tensor([True])
+        pushed = ~quiet
+        planted = torch.zeros_like(load, dtype=torch.bool)
+        anchors, planted = rewards.update_plant_anchors(xy, planted, xy, load, quiet, pushed, 40., 5.)
+        reference, valid = rewards.update_quiet_stance_reference(xy, pushed, xy, load, quiet, pushed, 40.)
+        anchors, planted = rewards.update_plant_anchors(anchors, planted, moved, torch.tensor([[4., 6.]]), quiet, pushed, 40., 5.)
+        self.assertEqual(planted.tolist(), [[False, True]])
+        anchors, planted = rewards.update_plant_anchors(anchors, planted, moved, load, quiet, pushed, 40., 5.)
+        reference, valid = rewards.update_quiet_stance_reference(reference, valid, moved, load, quiet, pushed, 40.)
+        env = SimpleNamespace(quiet_sole_speed=torch.zeros_like(load), quiet_sole_drift=(moved-anchors).norm(dim=-1),
+                              quiet_stance_drift=(moved-reference).norm(dim=-1), quiet_stance_valid=valid,
+                              quiet_loaded_feet=planted)
+        torch.testing.assert_close(rewards.quiet_foot_slide(env, .05, .02, .06), torch.tensor([.75]))
+        _, valid = rewards.update_quiet_stance_reference(reference, valid, moved, load, quiet, quiet, 40.)
+        self.assertFalse(valid.item())
+
+    def test_standing_target_smoothing_and_fixed_quiet_groups(self):
+        previous, next_target = torch.zeros(2, 3), torch.tensor([[0., 0., 0.], [.1, .2, -.3]])
+        samples = torch.stack([previous, *arm_motion.arm_substep_targets(previous, next_target, 4)])
+        torch.testing.assert_close(samples.diff(dim=0), (next_target / 4).expand_as(samples[1:]))
+        env = SimpleNamespace(policy_target_curvature=torch.ones(3), feet_should_be_planted=torch.tensor([True, False, True]),
+                              episode_length_buf=torch.tensor([3, 5, 2]))
+        torch.testing.assert_close(rewards.quiet_target_curvature(env), torch.tensor([1., 0., 0.]))
+        env.no_push_env_count = 2
+        env.cfg = SimpleNamespace(push=SimpleNamespace(mode=pushes.MIXED_PUSH))
+        with patch.object(pushes, "apply_mixed_push") as event:
+            pushes.apply_push_outside_quiet_envs(env, torch.tensor([1, 0]))
+            event.assert_not_called()
+            pushes.apply_push_outside_quiet_envs(env, torch.tensor([3, 1, 2]))
+            self.assertEqual(event.call_args.args[1].tolist(), [3, 2])
+
+    def test_fore_aft_offset_uses_sole_centres_in_the_pelvis_heading(self):
+        heading = torch.tensor([0., math.pi / 2, math.pi, 0., 0.])
+        zero = torch.zeros_like(heading)
+
+        def quat(yaw):
+            return torch.stack(((yaw / 2).cos(), torch.zeros_like(yaw),
+                                torch.zeros_like(yaw), (yaw / 2).sin()), dim=-1)
+
+        forward = torch.stack((heading.cos(), heading.sin(), zero), dim=-1)
+        lateral = torch.stack((-heading.sin(), heading.cos(), zero), dim=-1)
+        right = torch.tensor([[1., -2., .1]]).expand(len(heading), -1)
+        left = right + .24 * lateral + torch.tensor([.1, -.1, .1, 0., 0.])[:, None] * forward
+        left[:, 2] += .1
+        foot_yaws = heading[:, None].expand(-1, 2).clone()
+        foot_yaws[-1, 1] = math.pi / 2
+        data = SimpleNamespace(body_pos_w=torch.stack((left, right), dim=1),
+                               body_quat_w=quat(foot_yaws), root_quat_w=quat(heading))
+        env = SimpleNamespace(robot=SimpleNamespace(data=data), feet_body_ids=[0, 1],
+                              sole_centers_b=torch.tensor([[.08, 0., -.04], [.08, 0., -.04]]))
+        torch.testing.assert_close(rewards.sole_fore_aft_offset(env), torch.tensor([.1, .1, .1, 0., .08]))
+
+    def test_post_push_stagger_persists_when_still_and_has_a_free_band(self):
+        env = SimpleNamespace(fore_aft_offset_m=torch.tensor([.2, 0., .02, .03, .05, .08, .15]),
+                              post_push_settled=torch.tensor([False, True, True, True, True, True, True]))
+        cost = rewards.post_push_feet_stagger(env, .03, .05)
+        torch.testing.assert_close(cost, torch.tensor([0., 0., 0., 0., .08, .5, 1.9]))
+        # Fifty identical 20 ms frames cost one full second, even with stationary soles.
+        second = sum(-.02 * rewards.post_push_feet_stagger(env, .03, .05) for _ in range(50))
+        torch.testing.assert_close(second, -cost)
+
+    def test_loaded_contact_speed_uses_material_points_and_current_ground_load(self):
+        link = torch.zeros(7, 13)
+        link[:, :3] = torch.tensor([4., -2., .05])
+        link[:3, 7:9] = torch.tensor([.03, -.04])
+        link[3, 7] = .05
+        link[3, 11] = 1.0  # rocking about a stationary contact .05 m below the link
+        link[4:6, 12] = 1.0
+        forces = torch.tensor([40., 0., 39., 0., 0., 0., 80., 0., 20., 20., 10., 30., 0., 0.])[:, None]
+        points = link[:, None, :3].expand(-1, 2, -1).clone()
+        points[..., 2] = 0.
+        points[4, :, 0] += torch.tensor([-.1, .1])  # opposite slip velocities must not cancel
+        points[5, 1, 0] += .2  # load-weighted mean: (10*0 + 30*.2) / 40
+        normals = torch.zeros(14, 3)
+        normals[:, 2] = 1.
+        starts = torch.tensor([[0], [2], [-1], [6], [8], [10], [250]], dtype=torch.int32)
+        counts = torch.tensor([[1], [1], [0], [1], [2], [2], [0]], dtype=torch.int32)
+        data = (forces, points.reshape(-1, 3), normals, None, counts, starts)
+        speeds = rewards.loaded_contact_speed(link, data, torch.arange(2), 40.)
+        torch.testing.assert_close(speeds, torch.tensor([.05, 0., 0., 0., .1, .15, 0.]))
+
+    def test_loaded_slide_charges_each_foot_once_including_recovery(self):
+        # Metres travelled in four 5 ms substeps. Only the loaded feet contributed.
+        distance = torch.tensor([[.002, .002], [.002, 0.], [0., .001], [0., 0.]])
+        env = SimpleNamespace(sole_slide_distance=distance, step_dt=.020,
+                              recovering=torch.tensor([True, True, False, False]))
+        reward = -.5 * env.step_dt * rewards.loaded_sole_slide(env)
+        torch.testing.assert_close(reward, torch.tensor([-.002, -.001, -.0005, 0.]))
+
+    def test_quiet_inward_slip_uses_loaded_sole_surface_velocity(self):
+        # Inward, outward, common translation, recovery, unloaded, wide, rotated heading,
+        # rolling about a stationary sole, and the middle of the width transition.
+        count = 9
+        feet = torch.zeros(count, 2, 13)
+        feet[..., 3] = 1.
+        feet[:, 0, 8], feet[:, 1, 8] = -.005, .005
+        feet[1, :, 8] *= -1
+        feet[2, :, 8] = .2
+        feet[6, :, 8] = 0.
+        feet[6, 0, 7], feet[6, 1, 7] = .005, -.005
+        feet[7, :, 10] = torch.tensor([1., -1.])
+        feet[7, :, 8] = torch.tensor([-.04, .04])
+        root = feet[:, 0, 3:7].clone()
+        root[6] = torch.tensor([2**-.5, 0., 0., 2**-.5])
+        spheres = torch.zeros(2, 9, 4)
+        spheres[..., 2], spheres[..., 3] = -.035, .005
+        gap = torch.full((count,), .0581)
+        gap[5], gap[8] = .08, .06215
+        quiet = torch.ones(count, dtype=torch.bool)
+        quiet[3] = False
+        loads = torch.full((count, 2, 3), 190.)
+        loads[4, 1, 2] = 20.
+        env = SimpleNamespace(robot=SimpleNamespace(data=SimpleNamespace(
+            body_link_state_w=feet, root_quat_w=root)), sole_spheres=spheres, sole_gap_m=gap,
+            feet_body_ids=[0, 1], feet_cfg=SimpleNamespace(body_ids=[0, 1]),
+            contact_sensor=SimpleNamespace(data=SimpleNamespace(net_forces_w=loads)),
+            feet_should_be_planted=quiet)
+        cost = rewards.quiet_inward_slip(env, .0581, .0081, .01, 40., .001)
+        torch.testing.assert_close(cost, torch.tensor([.5, 0., 0., 0., 0., 0., .5, 0., .25]))
+
+    def test_all_phase_and_historical_upper_gap_cost(self):
         env = SimpleNamespace(sole_gap_m=torch.tensor([.50, .02, .12, .17, .32, .52]),
                               recovering=torch.tensor([True, False, False, False, False, False]))
         torch.testing.assert_close(rewards.feet_width_excess(env, .12, .10),
                                    torch.tensor([0., 0., 0., .125, 1.5, 3.5]))
+        torch.testing.assert_close(rewards.feet_width_excess(env, .12, .10, all_phases=True),
+                                   torch.tensor([3.3, 0., 0., .125, 1.5, 3.5]))
         self.assertGreater(rewards.feet_clearance_shortfall(env, .03)[1].item(), 0.)
 
     def test_quiet_foot_lift_uses_lowest_sphere_and_per_foot_cost(self):
@@ -318,6 +536,20 @@ class RewardTests(unittest.TestCase):
         env.feet_should_be_planted = torch.tensor([True, False, False])
         torch.testing.assert_close(rewards.both_feet_loaded(env), torch.tensor([1., 0., 0.]))
 
+    def test_foot_load_shortfall_penalizes_each_foot_only_while_planted(self):
+        loads = torch.tensor([[212., 212.], [150., 150.], [149., 300.], [305.5, 118.8],
+                              [118.8, 305.5], [75., 75.], [0., 300.], [-2., 0.], [0., 20.]])
+        forces = torch.full((len(loads), 4, 3), 500.)
+        forces[:, [3, 1], 2] = loads
+        env = SimpleNamespace(contact_sensor=SimpleNamespace(data=SimpleNamespace(net_forces_w=forces)),
+                              feet_cfg=SimpleNamespace(body_ids=[3, 1]),
+                              feet_should_be_planted=torch.tensor([True] * 8 + [False]))
+        expected = torch.tensor([0., 0., 1/150, 31.2/150, 31.2/150, 1., 1., 2., 0.])
+        torch.testing.assert_close(rewards.foot_load_shortfall(env, 150.), expected)
+        # A continuing load deficit incurs the same cost on every 20 ms step.
+        second = sum(-.02 * rewards.foot_load_shortfall(env, 150.) for _ in range(50))
+        torch.testing.assert_close(second, -expected)
+
     def test_sole_clearance_follows_pelvis_and_foot_orientation(self):
         # Same stance in two world headings, a narrow stance and an inward-turned left toe.
         heading = torch.tensor([0., math.pi / 2, 0., 0.])
@@ -341,8 +573,15 @@ class RewardTests(unittest.TestCase):
             body_quat_w=quat(foot_yaw), body_pos_w=torch.stack((left, right), dim=1))))
         env.sole_gap_m = rewards.sole_inner_gap(env)
         torch.testing.assert_close(env.sole_gap_m, torch.tensor([.035, .035, .015, -.0525]))
+        subset = torch.tensor([3, 0])
+        torch.testing.assert_close(rewards.sole_inner_gap(env, subset), env.sole_gap_m[subset])
         torch.testing.assert_close(rewards.feet_clearance_shortfall(env, .03),
                                    torch.tensor([0., 0., .25, 2.75**2]))
+        env.sole_gap_m = torch.tensor([.03, .06, .08, .12])
+        torch.testing.assert_close(rewards.feet_clearance_shortfall(env, .08),
+                                   torch.tensor([(.05 / .08)**2, .0625, 0., 0.]))
+        env.sole_gap_m = torch.tensor([.03, .05, .058131])
+        torch.testing.assert_close(rewards.feet_clearance_shortfall(env, .05), torch.tensor([.16, 0., 0.]))
 
     def test_waist_zero_uses_only_actual_waist_angles_and_joint_zero(self):
         position = torch.tensor([[2., 0., 3., 0., 0.], [2., .1, 3., -.2, .3]])
@@ -367,6 +606,22 @@ class RewardTests(unittest.TestCase):
         env = SimpleNamespace(robot=SimpleNamespace(data=SimpleNamespace(root_quat_w=quat)),
                               stand_anchor_yaw=torch.tensor([0.0, 0.0, -math.pi + 0.01]))
         self.assertAlmostEqual(rewards.heading_error(env)[2].item(), -0.02, places=5)
+
+    def test_torso_sway_measures_chest_tilt_and_ramps_after_external_pushes(self):
+        q = torch.zeros(6, 2, 4)
+        q[:, :, 0] = 1.
+        q[1:3, 1] = torch.tensor([math.sqrt(.5), 0., math.sqrt(.5), 0.])
+        omega = torch.zeros(6, 2, 3)
+        omega[:, 0, 1] = 40.  # Rapid pelvis motion is independent of this reward.
+        omega[:, 1, 0] = .5
+        omega[2, 1] = torch.tensor([0., 0., .5])
+        env = SimpleNamespace(robot=SimpleNamespace(data=SimpleNamespace(body_quat_w=q, body_ang_vel_w=omega)),
+                              torso_body_id=1, sim_step_counter=450, physics_dt=.005,
+                              foot_recovery_until=torch.tensor([0, 0, 0, 500, 350, 250]))
+        cost = rewards.torso_sway(env, rate_scale_rad_s=.5, ramp_s=1.)
+        torch.testing.assert_close(cost, torch.tensor([.5, 0., .5, 0., .25, .5]))
+        env.foot_recovery_until[4] = 0  # An episode reset restores full quiet-stance weighting.
+        self.assertAlmostEqual(rewards.torso_sway(env, .5, 1.)[4].item(), .5)
 
     def test_upside_down_torso_cannot_earn_upright_reward(self):
         quats = torch.tensor([[[1., 0., 0., 0.]], [[0., 1., 0., 0.]]])

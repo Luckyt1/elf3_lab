@@ -1,4 +1,4 @@
-"""Transitions of the GL-165 standing reference used to score push recovery."""
+"""Observable GL-165 standing-reference transitions, shared by Isaac and the exported actor."""
 
 import math
 
@@ -49,3 +49,11 @@ def advance_foot_reference(gathering, stable_ticks, pelvis_recovering, pelvis_re
     stable = (stable_ticks + 1) * ((pelvis_recovering | pending) & quiet_unforced & gap_in_band)
     relock = pending & (stable >= settle_steps)
     return pending & (relock == False), stable * (relock == False), relock
+
+
+def advance_gap_timer(outside_ticks, push_recovery, pushed, recovering, in_range):
+    """Suspend the standing band through a real push and its recovery. A voluntary step keeps the timer active."""
+    push_recovery = pushed | (push_recovery & recovering)
+    active = ~push_recovery
+    outside_ticks = (outside_ticks + 1) * (active & ~in_range)
+    return outside_ticks, push_recovery, active

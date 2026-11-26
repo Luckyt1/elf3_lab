@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--arm-database", type=Path, help="Optional arm motion database override.")
+parser.add_argument("--arm-database", type=Path, required=True)
 parser.add_argument("--output", type=Path, required=True)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
@@ -32,13 +32,13 @@ def main():
     cfg.noise.add_noise = False
     cfg.push.enabled = False
     cfg.domain_rand.events.add_base_mass = None
-    if args.arm_database is not None:
-        cfg.arm_motion.database = str(args.arm_database.resolve(strict=True))
+    cfg.arm_motion.database = str(args.arm_database.resolve())
     env = Gl165StandEnv(cfg, headless=True)
     stage = Usd.Stage.Open(str(PHYSICS_DIR / "usd/gl_165.usd"))
     bodies = {p.GetName(): p for p in stage.Traverse() if p.HasAPI(UsdPhysics.MassAPI)}
     masses = env.robot.data.default_mass[0].cpu().numpy()
     inertias = env.robot.data.default_inertia[0].cpu().numpy().reshape(-1, 3, 3)
+    centers = env.robot.root_physx_view.get_coms()[0, :, :3].cpu().numpy()
     rows = []
     for link in ET.parse(URDF_PATH).getroot().findall("link"):
         name = link.get("name")
@@ -52,8 +52,10 @@ def main():
         actual = axes @ np.diag(np.array(mass.GetDiagonalInertiaAttr().Get())) @ axes.T
         index = env.robot.body_names.index(name)
         expected_mass = float(element.find("mass").get("value"))
+        expected_center = np.fromstring(element.find("origin").get("xyz"), sep=" ")
         passed = (np.allclose(expected, actual, atol=1e-8, rtol=1e-4)
                   and np.allclose(expected, inertias[index], atol=1e-8, rtol=1e-4)
+                  and np.allclose(expected_center, centers[index], atol=1e-6)
                   and np.isclose(masses[index], expected_mass, atol=1e-7, rtol=1e-5))
         rows.append({"body": name, "mass_kg": float(masses[index]), "passed": bool(passed),
                      "maximum_inertia_error": float(np.abs(expected - actual).max())})
@@ -71,6 +73,8 @@ def main():
     soft_pass = bool(np.allclose(env.robot.data.soft_joint_pos_limits[0].cpu().numpy(), expected_soft, atol=1e-6))
     passed = all(r["passed"] for r in rows) and all(v == 9 for v in foot_spheres.values()) and soft_pass
     report = {"passed": passed, "bodies": rows, "body_count": len(rows), "foot_spheres": foot_spheres,
+              "nominal_mass_kg": float(masses.sum()), "reward_terms": env.reward_manager.active_terms,
+              "records_footprints": env.feet_anchor_xy is not None,
               "foot_geometry": foot_geometry,
               "soft_limits_match": soft_pass, "controller": env.controller_parameters,
               "actor_width": env.get_observations()[0].shape[-1]}
@@ -91,6 +95,6 @@ if __name__ == "__main__":
         report = json.loads(args.output.read_text()) if args.output.exists() else {}
         report.update(passed=False, error=traceback.format_exc())
         args.output.write_text(json.dumps(report, indent=2) + "\n")
-        raise
+        traceback.print_exc()
     finally:
         app.close(wait_for_replicator=False)

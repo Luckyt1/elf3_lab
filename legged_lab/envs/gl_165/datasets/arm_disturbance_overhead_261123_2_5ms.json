@@ -1,0 +1,2680 @@
+{
+  "schema_version": 2,
+  "purpose": "standing_arm_disturbances_not_amp",
+  "profile": "overhead",
+  "asset_signature": "91fa1bdf8686257036d55d74338da3ac313f92d6816c02b991590b561b0abdf6",
+  "mujoco_version": "3.17.0",
+  "controller_profile": "elf3_gains_gl165_xml_armature_fixed_head_20261117_5ms",
+  "arm_gains": {
+    "lshouder_y_joint": [
+      54.224,
+      3.452,
+      60.0
+    ],
+    "lshouder_x_joint": [
+      54.224,
+      3.452,
+      60.0
+    ],
+    "lshouder_z_joint": [
+      16.747,
+      1.066,
+      45.0
+    ],
+    "lelbow_y_joint": [
+      54.224,
+      3.452,
+      45.0
+    ],
+    "lwrist_x_joint": [
+      16.747,
+      1.066,
+      45.0
+    ],
+    "lwrist_y_joint": [
+      16.747,
+      1.066,
+      6.0
+    ],
+    "lwrist_z_joint": [
+      16.747,
+      1.066,
+      6.0
+    ],
+    "rshouder_y_joint": [
+      54.224,
+      3.452,
+      60.0
+    ],
+    "rshouder_x_joint": [
+      54.224,
+      3.452,
+      60.0
+    ],
+    "rshouder_z_joint": [
+      16.747,
+      1.066,
+      45.0
+    ],
+    "relbow_y_joint": [
+      54.224,
+      3.452,
+      45.0
+    ],
+    "rwrist_x_joint": [
+      16.747,
+      1.066,
+      45.0
+    ],
+    "rwrist_y_joint": [
+      16.747,
+      1.066,
+      6.0
+    ],
+    "rwrist_z_joint": [
+      16.747,
+      1.066,
+      6.0
+    ]
+  },
+  "physics_profile": "gl165_urdf_261123_2_5ms",
+  "source_xml_sha256": "c6e7493dbeb2fc8fb83116967eb62592a32d20948de1f1dc2e331b63b666bcd0",
+  "source_urdf_sha256": "4d277edbd99959f40e767fbd9368738e138bb706271eb01de47dc41e2afd20bd",
+  "armature_kg_m2": {
+    "lshouder_y_joint": 0.239662294,
+    "lshouder_x_joint": 0.239662294,
+    "lshouder_z_joint": 0.0133091413389,
+    "lelbow_y_joint": 0.0133091413389,
+    "lwrist_x_joint": 0.0133091413389,
+    "lwrist_y_joint": 0.0051125,
+    "lwrist_z_joint": 0.0051125,
+    "rshouder_y_joint": 0.239662294,
+    "rshouder_x_joint": 0.239662294,
+    "rshouder_z_joint": 0.0133091413389,
+    "relbow_y_joint": 0.0133091413389,
+    "rwrist_x_joint": 0.0133091413389,
+    "rwrist_y_joint": 0.0051125,
+    "rwrist_z_joint": 0.0051125
+  },
+  "validation_pd_mode": "explicit",
+  "accepted_seeds": [
+    42000,
+    42001,
+    42002,
+    42004,
+    42006,
+    42007,
+    42008,
+    42009,
+    42011,
+    42012,
+    42013,
+    42014,
+    42015,
+    42016,
+    42017,
+    42020,
+    42021,
+    42023,
+    42024,
+    42025,
+    42028,
+    42029,
+    42030,
+    42033,
+    42035,
+    42036,
+    42038,
+    42039,
+    42040,
+    42041,
+    42042,
+    42044,
+    42045,
+    42048,
+    42049,
+    42051,
+    42052,
+    42053,
+    42054,
+    42055,
+    42056,
+    42057,
+    42058,
+    42059,
+    42061,
+    42063,
+    42064,
+    42066,
+    42067,
+    42069,
+    42070,
+    42071,
+    42072,
+    42073,
+    42075,
+    42076,
+    42077,
+    42078,
+    42079,
+    42080,
+    42082,
+    42084,
+    42085,
+    42086,
+    42087,
+    42089,
+    42091,
+    42092,
+    42094,
+    42096,
+    42098,
+    42099,
+    42102,
+    42103,
+    42105,
+    42107,
+    42108,
+    42109,
+    42110,
+    42112,
+    42113,
+    42114,
+    42115,
+    42116,
+    42117,
+    42118,
+    42119,
+    42120,
+    42121,
+    42122,
+    42123,
+    42124,
+    42125,
+    42126,
+    42127,
+    42131,
+    42132,
+    42134,
+    42135,
+    42136,
+    42137,
+    42139,
+    42140,
+    42141,
+    42142,
+    42143,
+    42144,
+    42145,
+    42146,
+    42149,
+    42152,
+    42153,
+    42154,
+    42155,
+    42157,
+    42158,
+    42159,
+    42160,
+    42162,
+    42163,
+    42164,
+    42165,
+    42166,
+    42168,
+    42169,
+    42170,
+    42171,
+    42173
+  ],
+  "revalidated_source_database": {
+    "path": "/home/cheng/elf3lab/jili/elf3_lab/legged_lab/envs/gl_165/datasets/arm_disturbance_overhead_xml_5ms_v5.npz",
+    "sha256": "219a78557cdca817c1335e6012741086dbdc39d42a6217f7afbb771ec91636e6",
+    "targets_unchanged": true,
+    "asset_signature": "92461d2dc797c2a6ac9c658f2d7bb85b092075065cf570903f7a78c468a4ed45",
+    "segment_duration_s": 0.6
+  },
+  "rejected_candidates": [],
+  "clips": 128,
+  "clip_duration_s": 4.8,
+  "control_dt": 0.02,
+  "segment_duration_s": 0.6,
+  "segment_steps": 30,
+  "motion_types": [
+    "left_overhead",
+    "right_overhead",
+    "both_overhead",
+    "low_and_sideways"
+  ],
+  "overhead_order_per_clip": [
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "both",
+      "left",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "left",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "both",
+      "right",
+      "left"
+    ],
+    [
+      "left",
+      "right",
+      "both"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ],
+    [
+      "left",
+      "both",
+      "right"
+    ],
+    [
+      "right",
+      "both",
+      "left"
+    ]
+  ],
+  "head_top_m": 1.61952029869251,
+  "overhead_measurements": [
+    {
+      "peak_wrist_height_m": [
+        1.7021405560494651,
+        1.7318446397828304
+      ],
+      "overhead_duration_s": {
+        "left": 0.36,
+        "right": 0.39,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7095807415682802,
+        1.7034808109686592
+      ],
+      "overhead_duration_s": {
+        "left": 0.47000000000000003,
+        "right": 0.385,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.709193027178626,
+        1.7247016166488887
+      ],
+      "overhead_duration_s": {
+        "left": 0.45,
+        "right": 0.4,
+        "both": 0.375
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7228586989247603,
+        1.7138693435184535
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.39,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6932639804631995,
+        1.72994185163171
+      ],
+      "overhead_duration_s": {
+        "left": 0.34500000000000003,
+        "right": 0.445,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7203938827916458,
+        1.7307532761757685
+      ],
+      "overhead_duration_s": {
+        "left": 0.47500000000000003,
+        "right": 0.41000000000000003,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7236188970093012,
+        1.7347537547146048
+      ],
+      "overhead_duration_s": {
+        "left": 0.47500000000000003,
+        "right": 0.36,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.699845308090445,
+        1.7211464871779127
+      ],
+      "overhead_duration_s": {
+        "left": 0.33,
+        "right": 0.425,
+        "both": 0.38
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6963034868604179,
+        1.7260150165877985
+      ],
+      "overhead_duration_s": {
+        "left": 0.465,
+        "right": 0.36,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7150764334569486,
+        1.721318568222849
+      ],
+      "overhead_duration_s": {
+        "left": 0.325,
+        "right": 0.39,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7127295385963843,
+        1.7201148927138656
+      ],
+      "overhead_duration_s": {
+        "left": 0.4,
+        "right": 0.36,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7144257669096106,
+        1.7259454545325892
+      ],
+      "overhead_duration_s": {
+        "left": 0.39,
+        "right": 0.42,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.70852166306684,
+        1.7171346092051671
+      ],
+      "overhead_duration_s": {
+        "left": 0.38,
+        "right": 0.445,
+        "both": 0.39
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.705156550124698,
+        1.7076888069966811
+      ],
+      "overhead_duration_s": {
+        "left": 0.29,
+        "right": 0.355,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7054146094694174,
+        1.7052088659993725
+      ],
+      "overhead_duration_s": {
+        "left": 0.425,
+        "right": 0.34500000000000003,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7142140165102713,
+        1.719470028904127
+      ],
+      "overhead_duration_s": {
+        "left": 0.425,
+        "right": 0.35000000000000003,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7153840536956158,
+        1.7145840933532528
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.365,
+        "both": 0.365
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7087282594962243,
+        1.716029824503482
+      ],
+      "overhead_duration_s": {
+        "left": 0.335,
+        "right": 0.45,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.713044842131274,
+        1.715753341267961
+      ],
+      "overhead_duration_s": {
+        "left": 0.425,
+        "right": 0.385,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7013243321236047,
+        1.7062696363507457
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.36,
+        "both": 0.365
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7044995242570817,
+        1.7034061674040948
+      ],
+      "overhead_duration_s": {
+        "left": 0.33,
+        "right": 0.385,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7161618239309697,
+        1.7237810891491336
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.4,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7105341540785561,
+        1.7301492605969138
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.395,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.693586201768417,
+        1.7378704205605222
+      ],
+      "overhead_duration_s": {
+        "left": 0.325,
+        "right": 0.355,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7008630438119554,
+        1.693031123873665
+      ],
+      "overhead_duration_s": {
+        "left": 0.335,
+        "right": 0.37,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7223176065295025,
+        1.718664197670962
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.42,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7024425248004902,
+        1.715030688030048
+      ],
+      "overhead_duration_s": {
+        "left": 0.385,
+        "right": 0.34,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7236515693187628,
+        1.716135090287882
+      ],
+      "overhead_duration_s": {
+        "left": 0.48,
+        "right": 0.36,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7114597136130523,
+        1.694039436573148
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.365,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.708539830023518,
+        1.7173298647988957
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.41000000000000003,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7258956085494936,
+        1.690412446973483
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.305,
+        "both": 0.31
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.727674997907024,
+        1.7045668401647998
+      ],
+      "overhead_duration_s": {
+        "left": 0.32,
+        "right": 0.445,
+        "both": 0.375
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7292531632719905,
+        1.719762879739228
+      ],
+      "overhead_duration_s": {
+        "left": 0.47500000000000003,
+        "right": 0.385,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7093272998293763,
+        1.7007180690898396
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.34500000000000003,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7131924845241282,
+        1.7070281118984487
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.335,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7121434237432964,
+        1.725408491308704
+      ],
+      "overhead_duration_s": {
+        "left": 0.445,
+        "right": 0.33,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7267415094884873,
+        1.715312499270501
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.36,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7144436167131494,
+        1.6920121995223458
+      ],
+      "overhead_duration_s": {
+        "left": 0.525,
+        "right": 0.335,
+        "both": 0.28500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7300224891589542,
+        1.7311375994890832
+      ],
+      "overhead_duration_s": {
+        "left": 0.42,
+        "right": 0.385,
+        "both": 0.35000000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7302253746258722,
+        1.7087693110520463
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.405,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7297536795271837,
+        1.711224673022495
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.43,
+        "both": 0.375
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.735287312121997,
+        1.708631383288094
+      ],
+      "overhead_duration_s": {
+        "left": 0.485,
+        "right": 0.355,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6948682834617768,
+        1.712572281239044
+      ],
+      "overhead_duration_s": {
+        "left": 0.41500000000000004,
+        "right": 0.335,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7179317662252258,
+        1.730802125620203
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.41000000000000003,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.724760095467409,
+        1.7111637913237159
+      ],
+      "overhead_duration_s": {
+        "left": 0.485,
+        "right": 0.315,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7151201715033453,
+        1.7198857349188392
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.405,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.719569750554369,
+        1.7225693625660448
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.405,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7144191834145206,
+        1.7353729462479155
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.4,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6975468128226168,
+        1.7130201731628207
+      ],
+      "overhead_duration_s": {
+        "left": 0.35000000000000003,
+        "right": 0.435,
+        "both": 0.305
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7117482008058127,
+        1.7030792862590507
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.37,
+        "both": 0.35000000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7129252977163465,
+        1.7007132875041961
+      ],
+      "overhead_duration_s": {
+        "left": 0.385,
+        "right": 0.37,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7046054581618324,
+        1.7071438542654571
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.385,
+        "both": 0.365
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.698729179916882,
+        1.7233466243811872
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.33,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7073474349278681,
+        1.6967542184561315
+      ],
+      "overhead_duration_s": {
+        "left": 0.42,
+        "right": 0.38,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.724127471948599,
+        1.7002493502514504
+      ],
+      "overhead_duration_s": {
+        "left": 0.43,
+        "right": 0.355,
+        "both": 0.385
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7247773478325956,
+        1.7215405745598253
+      ],
+      "overhead_duration_s": {
+        "left": 0.42,
+        "right": 0.44,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7361353319739452,
+        1.7008535068175106
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.385,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7239753455851492,
+        1.7040392844609058
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.43,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7262943553393066,
+        1.7109916547741855
+      ],
+      "overhead_duration_s": {
+        "left": 0.435,
+        "right": 0.35000000000000003,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7385242423652079,
+        1.712496731966412
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.41000000000000003,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.718818446447149,
+        1.7353980464357421
+      ],
+      "overhead_duration_s": {
+        "left": 0.335,
+        "right": 0.455,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.728976711883259,
+        1.7062746182208475
+      ],
+      "overhead_duration_s": {
+        "left": 0.325,
+        "right": 0.41000000000000003,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7161227169518125,
+        1.7004573229853261
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.375,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7398649241054587,
+        1.7182463932934273
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.405,
+        "both": 0.38
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7320839834265853,
+        1.7362780361439392
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.39,
+        "both": 0.39
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6991875222508168,
+        1.7253037125225192
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.355,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7401507627947133,
+        1.7146912458738974
+      ],
+      "overhead_duration_s": {
+        "left": 0.34500000000000003,
+        "right": 0.4,
+        "both": 0.375
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7255324786032777,
+        1.7070722766763016
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.41000000000000003,
+        "both": 0.365
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7153288158002864,
+        1.725466043496279
+      ],
+      "overhead_duration_s": {
+        "left": 0.36,
+        "right": 0.41500000000000004,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7273304623099928,
+        1.7212675994082707
+      ],
+      "overhead_duration_s": {
+        "left": 0.375,
+        "right": 0.375,
+        "both": 0.38
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7040855424776815,
+        1.6982530514846466
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.34,
+        "both": 0.35000000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6958529929905604,
+        1.7385713632260535
+      ],
+      "overhead_duration_s": {
+        "left": 0.35000000000000003,
+        "right": 0.41000000000000003,
+        "both": 0.4
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7130191279927431,
+        1.712984201429162
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.33,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.709354977124716,
+        1.7022538965417109
+      ],
+      "overhead_duration_s": {
+        "left": 0.315,
+        "right": 0.37,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6978230529886211,
+        1.7065432392868285
+      ],
+      "overhead_duration_s": {
+        "left": 0.305,
+        "right": 0.4,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.733328458413505,
+        1.7107906341479602
+      ],
+      "overhead_duration_s": {
+        "left": 0.335,
+        "right": 0.38,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6999473552567415,
+        1.7190604897830082
+      ],
+      "overhead_duration_s": {
+        "left": 0.39,
+        "right": 0.43,
+        "both": 0.29
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.728780441682119,
+        1.698181099361593
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.335,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7226456200400002,
+        1.711962545079021
+      ],
+      "overhead_duration_s": {
+        "left": 0.36,
+        "right": 0.42,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7071258885525984,
+        1.694887354080497
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.335,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7306235258456437,
+        1.7102661802285564
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.425,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7165923724911247,
+        1.7351097412671814
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.32,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7158300383393923,
+        1.7289442840202236
+      ],
+      "overhead_duration_s": {
+        "left": 0.4,
+        "right": 0.39,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7190176254694887,
+        1.733488597567252
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.36,
+        "both": 0.375
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7146291444627852,
+        1.717414398146671
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.34500000000000003,
+        "both": 0.38
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.718936837193881,
+        1.7183875193505216
+      ],
+      "overhead_duration_s": {
+        "left": 0.39,
+        "right": 0.435,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7336757539941046,
+        1.7220510265350308
+      ],
+      "overhead_duration_s": {
+        "left": 0.365,
+        "right": 0.5,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7325321028538192,
+        1.705330101416978
+      ],
+      "overhead_duration_s": {
+        "left": 0.41000000000000003,
+        "right": 0.395,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7283033359713942,
+        1.7112308878964808
+      ],
+      "overhead_duration_s": {
+        "left": 0.375,
+        "right": 0.33,
+        "both": 0.39
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7084235103342413,
+        1.7099918331592305
+      ],
+      "overhead_duration_s": {
+        "left": 0.41500000000000004,
+        "right": 0.41000000000000003,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7153523503021968,
+        1.7175652390659037
+      ],
+      "overhead_duration_s": {
+        "left": 0.375,
+        "right": 0.405,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6955689709330446,
+        1.7179437662479133
+      ],
+      "overhead_duration_s": {
+        "left": 0.31,
+        "right": 0.335,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7171057467283113,
+        1.7151951177227052
+      ],
+      "overhead_duration_s": {
+        "left": 0.39,
+        "right": 0.435,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.705058757009014,
+        1.7091529496402265
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.4,
+        "both": 0.385
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7205667939375828,
+        1.7008520782277976
+      ],
+      "overhead_duration_s": {
+        "left": 0.35000000000000003,
+        "right": 0.395,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7018904201680922,
+        1.7209780637916676
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.375,
+        "both": 0.39
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6963105094920494,
+        1.71801446411827
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.36,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7178000729767209,
+        1.7303324536089608
+      ],
+      "overhead_duration_s": {
+        "left": 0.44,
+        "right": 0.34500000000000003,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7075397403554908,
+        1.7397404192647052
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.425,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.698509223051522,
+        1.7197935827475583
+      ],
+      "overhead_duration_s": {
+        "left": 0.385,
+        "right": 0.39,
+        "both": 0.35000000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.733706366598149,
+        1.7178627784467528
+      ],
+      "overhead_duration_s": {
+        "left": 0.41500000000000004,
+        "right": 0.395,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7093787424032234,
+        1.7078105181204675
+      ],
+      "overhead_duration_s": {
+        "left": 0.34500000000000003,
+        "right": 0.44,
+        "both": 0.32
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.715673124486608,
+        1.7109720916775497
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.395,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7108185835676408,
+        1.7293290109113506
+      ],
+      "overhead_duration_s": {
+        "left": 0.375,
+        "right": 0.405,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.716141711249252,
+        1.705829025214591
+      ],
+      "overhead_duration_s": {
+        "left": 0.39,
+        "right": 0.4,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6925943450516083,
+        1.6992291847388499
+      ],
+      "overhead_duration_s": {
+        "left": 0.28500000000000003,
+        "right": 0.41500000000000004,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7109203578672347,
+        1.703386597753153
+      ],
+      "overhead_duration_s": {
+        "left": 0.32,
+        "right": 0.385,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.711536805296092,
+        1.705835871046974
+      ],
+      "overhead_duration_s": {
+        "left": 0.325,
+        "right": 0.405,
+        "both": 0.34500000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7190836665103315,
+        1.7183687051229688
+      ],
+      "overhead_duration_s": {
+        "left": 0.385,
+        "right": 0.33,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7155862412091143,
+        1.7141246623015511
+      ],
+      "overhead_duration_s": {
+        "left": 0.355,
+        "right": 0.375,
+        "both": 0.35000000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.70175865362514,
+        1.727006757694701
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.38,
+        "both": 0.33
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.703960704323446,
+        1.7057185842333156
+      ],
+      "overhead_duration_s": {
+        "left": 0.36,
+        "right": 0.4,
+        "both": 0.35000000000000003
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7384581494936193,
+        1.707928882754407
+      ],
+      "overhead_duration_s": {
+        "left": 0.34,
+        "right": 0.385,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7304640420135853,
+        1.7144506088703464
+      ],
+      "overhead_duration_s": {
+        "left": 0.41500000000000004,
+        "right": 0.39,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7320820745804608,
+        1.7146038255143947
+      ],
+      "overhead_duration_s": {
+        "left": 0.395,
+        "right": 0.39,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7223147544403783,
+        1.7335321122623648
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.405,
+        "both": 0.335
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.695941081882308,
+        1.7065481084061218
+      ],
+      "overhead_duration_s": {
+        "left": 0.34500000000000003,
+        "right": 0.425,
+        "both": 0.395
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6928784017305423,
+        1.7016937620144121
+      ],
+      "overhead_duration_s": {
+        "left": 0.42,
+        "right": 0.355,
+        "both": 0.31
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7135628669151615,
+        1.701421889825183
+      ],
+      "overhead_duration_s": {
+        "left": 0.44,
+        "right": 0.355,
+        "both": 0.31
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.71729047326101,
+        1.7272772389097404
+      ],
+      "overhead_duration_s": {
+        "left": 0.37,
+        "right": 0.4,
+        "both": 0.37
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7277977361623726,
+        1.7080547624530338
+      ],
+      "overhead_duration_s": {
+        "left": 0.46,
+        "right": 0.38,
+        "both": 0.36
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7228968711850092,
+        1.7263019088664455
+      ],
+      "overhead_duration_s": {
+        "left": 0.335,
+        "right": 0.355,
+        "both": 0.355
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7284971502448951,
+        1.7132508086411884
+      ],
+      "overhead_duration_s": {
+        "left": 0.47000000000000003,
+        "right": 0.365,
+        "both": 0.325
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.6917077959410673,
+        1.7153727904241822
+      ],
+      "overhead_duration_s": {
+        "left": 0.35000000000000003,
+        "right": 0.39,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7185201664386585,
+        1.7194624825366587
+      ],
+      "overhead_duration_s": {
+        "left": 0.39,
+        "right": 0.31,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7265735659332135,
+        1.7179160671431393
+      ],
+      "overhead_duration_s": {
+        "left": 0.42,
+        "right": 0.435,
+        "both": 0.34
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7089368456831393,
+        1.70400493545589
+      ],
+      "overhead_duration_s": {
+        "left": 0.405,
+        "right": 0.315,
+        "both": 0.315
+      }
+    },
+    {
+      "peak_wrist_height_m": [
+        1.7167959903353542,
+        1.7236298974177051
+      ],
+      "overhead_duration_s": {
+        "left": 0.34,
+        "right": 0.355,
+        "both": 0.355
+      }
+    }
+  ],
+  "peak_actual_joint_speed_rad_s": [
+    7.2542830204037285,
+    2.8865524142600503,
+    1.6412236912927287,
+    3.2149341971984984,
+    1.9740116918264285,
+    1.3369352129496384,
+    1.3230259966342335,
+    7.245180148687206,
+    3.029770476865261,
+    1.6961395465683433,
+    3.2341686469160056,
+    1.9333953423929022,
+    1.3199540038966495,
+    1.332425821229491
+  ],
+  "peak_target_joint_speed_rad_s": [
+    6.383794784545898,
+    2.565014362335205,
+    1.357964038848877,
+    3.0048608779907227,
+    1.9802991151809692,
+    1.224900484085083,
+    1.2121684551239014,
+    6.322509288787842,
+    2.579301595687866,
+    1.439785361289978,
+    3.034871816635132,
+    1.9434447288513184,
+    1.2082539796829224,
+    1.220999836921692
+  ],
+  "urdf_joint_speed_limits_rad_s": [
+    7.3304,
+    7.3304,
+    12.5664,
+    12.5664,
+    12.5664,
+    15.1844,
+    15.1844,
+    7.3304,
+    7.3304,
+    12.5664,
+    12.5664,
+    12.5664,
+    15.1844,
+    15.1844
+  ],
+  "target_and_actual_speed_limits_checked": true,
+  "seed": 42000,
+  "shoulder_opening_deg": [
+    15,
+    65
+  ],
+  "settings": {
+    "start_iteration": 0,
+    "curriculum_duration_s": 4800.0,
+    "initial_scale": 0.02,
+    "command_threshold": 0.6,
+    "resample_interval_s": 0.6,
+    "stand_amplitudes": [
+      0.8,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.4,
+      0.3,
+      0.8,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.4,
+      0.3
+    ],
+    "move_amplitudes": [
+      0.3,
+      0.2,
+      0.2,
+      0.2,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.2,
+      0.2,
+      0.2,
+      0.3,
+      0.3,
+      0.3
+    ],
+    "physics_dt": 0.005,
+    "decimation": 4,
+    "rollout_steps": 24,
+    "soft_limit_factor": 0.95,
+    "base_position": [
+      0.0,
+      0.0,
+      0.9952982869520969
+    ],
+    "joint_names": [
+      "lshouder_y_joint",
+      "lshouder_x_joint",
+      "lshouder_z_joint",
+      "lelbow_y_joint",
+      "lwrist_x_joint",
+      "lwrist_y_joint",
+      "lwrist_z_joint",
+      "rshouder_y_joint",
+      "rshouder_x_joint",
+      "rshouder_z_joint",
+      "relbow_y_joint",
+      "rwrist_x_joint",
+      "rwrist_y_joint",
+      "rwrist_z_joint"
+    ],
+    "robot_label": "GL-165",
+    "collision_group": 0,
+    "visual_group": 1,
+    "robot_urdf": "/home/cheng/elf3lab/jili/elf3_lab/legged_lab/assets/gl_165/urdf_261123_2_5ms/gl_165_xml_physics.urdf",
+    "source_robot_directory": "/home/cheng/elf3lab/jili/data/165robot_urdf_261123_2/165robot_urdf_261123(2)/urdf",
+    "preview_motion_mode": "smooth",
+    "preview_shoulder_opening_deg": 65.0,
+    "preview_avoid_collisions": true,
+    "collision_excluded_body_pairs": [
+      [
+        "body_y_link",
+        "lshouder_y_link"
+      ],
+      [
+        "lshouder_y_link",
+        "lshouder_x_link"
+      ],
+      [
+        "lshouder_x_link",
+        "lbigarm_z_link"
+      ],
+      [
+        "lbigarm_z_link",
+        "lsmallarm_y_link"
+      ],
+      [
+        "lsmallarm_y_link",
+        "lsmallarm_x_link"
+      ],
+      [
+        "lwrist_z_link",
+        "lwrist_y_link"
+      ],
+      [
+        "lsmallarm_x_link",
+        "lwrist_z_link"
+      ],
+      [
+        "body_y_link",
+        "rshouder_y_link"
+      ],
+      [
+        "rshouder_y_link",
+        "rshouder_x_link"
+      ],
+      [
+        "rshouder_x_link",
+        "rbigarm_z_link"
+      ],
+      [
+        "rbigarm_z_link",
+        "rsmallarm_y_link"
+      ],
+      [
+        "rsmallarm_y_link",
+        "rsmallarm_x_link"
+      ],
+      [
+        "rwrist_z_link",
+        "rwrist_y_link"
+      ],
+      [
+        "rsmallarm_x_link",
+        "rwrist_z_link"
+      ],
+      [
+        "lsmallarm_x_link",
+        "lwrist_y_link"
+      ],
+      [
+        "rsmallarm_x_link",
+        "rwrist_y_link"
+      ]
+    ]
+  },
+  "kinematic_curriculum_scales": [
+    0.02,
+    0.25,
+    0.51,
+    0.75,
+    1.0
+  ],
+  "dynamic_validation_scale": 1.0,
+  "nominal_non_arm_joints": {
+    "waist_z_joint": 0.0,
+    "waist_x_joint": 0.0,
+    "waist_y_joint": 0.0,
+    "lhip_y_joint": -0.315364011971,
+    "lhip_x_joint": -0.00517333597433,
+    "lhip_z_joint": -0.0560915128826,
+    "lknee_y_joint": 0.597529351667,
+    "lankle_y_joint": -0.300928949319,
+    "lankle_x_joint": -0.00278352160397,
+    "lshouder_y_joint": 0.0,
+    "lshouder_x_joint": 0.1,
+    "lshouder_z_joint": 0.0,
+    "lelbow_y_joint": 1.1,
+    "lwrist_x_joint": 0.0,
+    "lwrist_z_joint": 0.0,
+    "lwrist_y_joint": 0.0,
+    "rhip_y_joint": -0.315364011971,
+    "rhip_x_joint": 0.00517333597433,
+    "rhip_z_joint": 0.0560915128826,
+    "rknee_y_joint": 0.597529351667,
+    "rankle_y_joint": -0.300928949319,
+    "rankle_x_joint": 0.00278352160397,
+    "rshouder_y_joint": 0.0,
+    "rshouder_x_joint": -0.1,
+    "rshouder_z_joint": 0.0,
+    "relbow_y_joint": 1.1,
+    "rwrist_x_joint": 0.0,
+    "rwrist_z_joint": 0.0,
+    "rwrist_y_joint": 0.0
+  },
+  "collision_validation": {
+    "checked_pairs": 551,
+    "target_clearance_m": 0.01,
+    "stop_clearance_m": 0.005,
+    "path_max_joint_step_rad": 0.02,
+    "minimum_actual_distance_m": 0.013286090564964754,
+    "closest_body_pair": [
+      "rbigarm_z_link",
+      "rsmallarm_x_link"
+    ],
+    "rejected_goals": 0,
+    "held_segments": 0,
+    "safety_stops": 0,
+    "contact_steps": 0
+  },
+  "minimum_gap_per_clip_m": [
+    0.01328609071209479,
+    0.013286094118334089,
+    0.013286094523663975,
+    0.013286092215997995,
+    0.01328609426505179,
+    0.0132860932104413,
+    0.013286093419578024,
+    0.013286094615329067,
+    0.013286094757773344,
+    0.013286091184099746,
+    0.013286090606322907,
+    0.013286090862848819,
+    0.013286097869883294,
+    0.013286091952294748,
+    0.013286091936328457,
+    0.013286099117301796,
+    0.013286092572222982,
+    0.013286090943713233,
+    0.01328609160102887,
+    0.013286093827102682,
+    0.013286094440153124,
+    0.013286091849858498,
+    0.01328609097856384,
+    0.0132860950544546,
+    0.013286091552605987,
+    0.013286092075648528,
+    0.013286094404612175,
+    0.013286094516300839,
+    0.01328609060283116,
+    0.013286093746538196,
+    0.013286094142522829,
+    0.013286091994687763,
+    0.013286091183942673,
+    0.013286093847052432,
+    0.01328609097686657,
+    0.013286090624811597,
+    0.013286091240636557,
+    0.013286092565330341,
+    0.013286100437090394,
+    0.01328609064225386,
+    0.01328609289392434,
+    0.013286096662419592,
+    0.013286095336189505,
+    0.013286094308967013,
+    0.013286090606311418,
+    0.013286091276524163,
+    0.013286096299508478,
+    0.013286093877830531,
+    0.013286091382952607,
+    0.01328609087030912,
+    0.013286091560778422,
+    0.013286093120653207,
+    0.013286090987036682,
+    0.013286094187988179,
+    0.013286094368996025,
+    0.01328609120898143,
+    0.013286091071271768,
+    0.013286095899539142,
+    0.01328609788962907,
+    0.013286091484403937,
+    0.013286094000285846,
+    0.013286091275350673,
+    0.013286090756318326,
+    0.013286091080637571,
+    0.013286100108903529,
+    0.013286092528038841,
+    0.013286090564964754,
+    0.013286093294331757,
+    0.01328609644385355,
+    0.013286098178197824,
+    0.013286093985123605,
+    0.013286098310101477,
+    0.01328609253843168,
+    0.013286090599510048,
+    0.013286091027446845,
+    0.013286091931258985,
+    0.013286092546804216,
+    0.013286090780866804,
+    0.013286092387573573,
+    0.013286090638784285,
+    0.013286091032532385,
+    0.013286091226437445,
+    0.013286093775553794,
+    0.01328609344128159,
+    0.013286091007939888,
+    0.01328609438084366,
+    0.013286094446528347,
+    0.013286091857777668,
+    0.013286096098395418,
+    0.013286091076445489,
+    0.013286093607927837,
+    0.013286098131121101,
+    0.013286094479847617,
+    0.013286090980905807,
+    0.01328609085977464,
+    0.013286097149456486,
+    0.01328609080119171,
+    0.013286094345524076,
+    0.013286092604252031,
+    0.01328609100544682,
+    0.01328609221953481,
+    0.013286091182446615,
+    0.01328609542658972,
+    0.013286091924678296,
+    0.013286093920738113,
+    0.013286091180391315,
+    0.013286095231813838,
+    0.01328609263154973,
+    0.013286092161462003,
+    0.01328609643361453,
+    0.013286094371591712,
+    0.013286093470207067,
+    0.01328609541669246,
+    0.01328609570561843,
+    0.01328609441940109,
+    0.013286093020585248,
+    0.0132860945938587,
+    0.013286091368818783,
+    0.013286094062205702,
+    0.013286091391574056,
+    0.01328609404316115,
+    0.013286095922545071,
+    0.013286094441592332,
+    0.013286093279106095,
+    0.013286091898848386,
+    0.013286091637686672,
+    0.013286094824421805,
+    0.013286093910751893
+  ],
+  "limitation": "Checked with fixed waist and legs; training enables PhysX self-contact and failure resets.",
+  "sha256": "db28fba97d3832ac39070a9b5773293c8318fe36b81753a023202828052ef875"
+}

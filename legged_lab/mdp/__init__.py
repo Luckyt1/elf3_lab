@@ -16,5 +16,9 @@
 # with additional modifications by the TienKung-Lab Project,
 # and is distributed under the BSD-3-Clause license.
 
+"""This sub-module contains the functions that are specific to the locomotion environments."""
+
 from isaaclab.envs.mdp import *
-from .rewards import action_rate_l2, alive, feet_slide, flat_orientation_l2, is_terminated, joint_vel_l2
+
+# from .rewards import *
+from .rewards_elf3 import *
