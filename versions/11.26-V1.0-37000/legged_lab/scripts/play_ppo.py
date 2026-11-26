@@ -1,0 +1,206 @@
+# Copyright (c) 2021-2024, The RSL-RL Project Developers.
+# All rights reserved.
+# Original code is licensed under the BSD-3-Clause license.
+#
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# All rights reserved.
+#
+# Copyright (c) 2025-2026, The Legged Lab Project Developers.
+# All rights reserved.
+#
+# Copyright (c) 2025-2026, The TienKung-Lab Project Developers.
+# All rights reserved.
+# Modifications are licensed under the BSD-3-Clause license.
+#
+# This file contains code derived from the RSL-RL, Isaac Lab, and Legged Lab Projects,
+# with additional modifications by the TienKung-Lab Project,
+# and is distributed under the BSD-3-Clause license.
+
+import argparse
+import os
+import time
+from pathlib import Path
+
+import torch
+from isaaclab.app import AppLauncher
+
+from legged_lab.utils import task_registry
+from rsl_rl.runners import OnPolicyRunner
+
+# local imports
+import legged_lab.utils.cli_args as cli_args  # isort: skip
+
+# add argparse arguments
+parser = argparse.ArgumentParser(description="Play an RL agent with RSL-RL.")
+parser.add_argument("--task", type=str, default=None, help="Name of the task.")
+parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
+parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
+parser.add_argument("--real-time", action="store_true", help="Limit playback to real-time speed.")
+parser.add_argument("--state-stream", help="Publish one GL-165 environment to a JSON file for a separate viewer.")
+parser.add_argument("--arm-database", type=Path, help="Override the GL-165 arm disturbance database.")
+
+# append RSL-RL cli arguments
+cli_args.add_rsl_rl_args(parser)
+# append AppLauncher cli args
+AppLauncher.add_app_launcher_args(parser)
+args_cli, hydra_args = parser.parse_known_args()
+if args_cli.arm_database is not None and args_cli.task != "stand_gl165":
+    parser.error("--arm-database is supported only for stand_gl165")
+# Start camera rendering
+if "sensor" in args_cli.task:
+    args_cli.enable_cameras = True
+
+# launch omniverse app
+app_launcher = AppLauncher(args_cli)
+simulation_app = app_launcher.app
+
+from isaaclab_rl.rsl_rl import export_policy_as_jit, export_policy_as_onnx
+from isaaclab_tasks.utils import get_checkpoint_path
+
+from legged_lab.envs import *  # noqa:F401, F403
+from legged_lab.utils.cli_args import update_rsl_rl_cfg
+
+
+def configure_ppo_agent(agent_cfg):
+    """Force a task config to use plain PPO for play."""
+    runner_class_name = getattr(agent_cfg, "runner_class_name", "OnPolicyRunner")
+    if runner_class_name != "OnPolicyRunner":
+        print(
+            f"[INFO] Ignoring runner_class_name={runner_class_name!r}; "
+            "play_ppo.py uses OnPolicyRunner."
+        )
+        agent_cfg.runner_class_name = "OnPolicyRunner"
+
+    algorithm_class_name = getattr(agent_cfg.algorithm, "class_name", "PPO")
+    if algorithm_class_name != "PPO":
+        print(f"[INFO] Overriding algorithm.class_name={algorithm_class_name!r} to 'PPO'.")
+        agent_cfg.algorithm.class_name = "PPO"
+
+    return agent_cfg
+
+
+def play():
+    runner: OnPolicyRunner
+    env_cfg: BaseEnvCfg  # noqa:F405
+
+    env_class_name = args_cli.task
+    env_cfg, agent_cfg = task_registry.get_cfgs(env_class_name)
+    is_standing_task = env_class_name in {"walk_elf3_tang", "stand_gl165"}
+    if env_class_name == "stand_gl165":
+        env_cfg.arm_motion.curriculum_enabled = False
+
+    env_cfg.noise.add_noise = False
+    if env_class_name != "stand_gl165":
+        env_cfg.scene.max_episode_length_s = 40.0
+    env_cfg.scene.num_envs = 10
+    env_cfg.scene.env_spacing = 2.5
+    if is_standing_task:
+        env_cfg.commands.rel_standing_envs = 1.0
+        env_cfg.commands.rel_heading_envs = 0.0
+        env_cfg.commands.heading_command = False
+        env_cfg.commands.ranges.lin_vel_x = (0.0, 0.0)
+        env_cfg.commands.ranges.lin_vel_y = (0.0, 0.0)
+        env_cfg.commands.ranges.ang_vel_z = (0.0, 0.0)
+        env_cfg.commands.ranges.heading = (0.0, 0.0)
+        if env_cfg.domain_rand.events.push_robot is not None:
+            env_cfg.domain_rand.events.push_robot.interval_range_s = (8.0, 12.0)
+    else:
+        env_cfg.domain_rand.events.push_robot = None
+        env_cfg.commands.rel_standing_envs = 0.0
+        # env_cfg.commands.ranges.lin_vel_x = (1.0, 1.0)
+        # env_cfg.commands.ranges.lin_vel_x = (-1.0, 1.0)
+        # env_cfg.commands.ranges.lin_vel_x = (-0.5, 0.5)
+        env_cfg.commands.ranges.lin_vel_x = (0.2, 0.4)
+        # env_cfg.commands.ranges.lin_vel_x = (-0.5, 2.3)
+        # env_cfg.commands.ranges.lin_vel_x = (-0.5, 3.0)
+        # env_cfg.commands.ranges.lin_vel_x = (0.0, 0.0)
+        env_cfg.commands.ranges.lin_vel_y = (0.0, 0.0)
+        env_cfg.commands.ranges.ang_vel_z = (0.0, 0.0)
+        # env_cfg.commands.ranges.lin_vel_y = (-0.5, 0.5)
+    env_cfg.scene.height_scanner.drift_range = (0.0, 0.0)
+
+    if not is_standing_task:
+        env_cfg.scene.terrain_generator = None
+        env_cfg.scene.terrain_type = "plane"
+
+    if env_cfg.scene.terrain_generator is not None:
+        env_cfg.scene.terrain_generator.num_rows = 5
+        env_cfg.scene.terrain_generator.num_cols = 5
+        env_cfg.scene.terrain_generator.curriculum = False
+        env_cfg.scene.terrain_generator.difficulty_range = (0.2, 0.2)
+
+    if args_cli.num_envs is not None:
+        env_cfg.scene.num_envs = args_cli.num_envs
+    if args_cli.state_stream and (env_class_name != "stand_gl165" or env_cfg.scene.num_envs != 1):
+        raise ValueError("--state-stream requires --task stand_gl165 --num_envs 1")
+
+    agent_cfg = update_rsl_rl_cfg(agent_cfg, args_cli)
+    env_cfg.scene.seed = agent_cfg.seed
+    log_root_path = os.path.abspath(os.path.join("logs", agent_cfg.experiment_name))
+    resume_path = get_checkpoint_path(log_root_path, agent_cfg.load_run, agent_cfg.load_checkpoint)
+    log_dir = os.path.dirname(resume_path)
+    if env_class_name == "stand_gl165":
+        env_cfg.restore_for_playback(resume_path, args_cli.arm_database)
+        env_cfg.push.curriculum_enabled = False
+
+    env_class = task_registry.get_task_class(env_class_name)
+    env = env_class(env_cfg, args_cli.headless)
+    if env_class_name == "stand_gl165" and not args_cli.headless:
+        origin = env.scene.env_origins[0].cpu().numpy()
+        env.sim.set_camera_view(eye=origin + [3.0, -3.0, 1.8], target=origin + [0.0, 0.0, 0.85])
+
+    print(f"[INFO] Loading experiment from directory: {log_root_path}")
+
+    agent_cfg = configure_ppo_agent(agent_cfg)
+    runner = OnPolicyRunner(env, agent_cfg.to_dict(), log_dir=log_dir, device=agent_cfg.device)
+    runner.load(resume_path, load_optimizer=False)
+    if env_class_name == "stand_gl165":
+        env.learning_iteration = runner.current_learning_iteration
+    print(f"[INFO] Playing checkpoint: {resume_path}", flush=True)
+
+    policy = runner.get_inference_policy(device=env.device)
+
+    export_model_dir = os.path.join(os.path.dirname(resume_path), "exported")
+    export_policy_as_jit(runner.alg.policy, runner.obs_normalizer, path=export_model_dir, filename="policy.pt")
+    export_policy_as_onnx(
+        runner.alg.policy, normalizer=runner.obs_normalizer, path=export_model_dir, filename="policy.onnx"
+    )
+
+    if not args_cli.headless:
+        from legged_lab.utils.keyboard import Keyboard
+
+        keyboard = Keyboard(env)  # noqa:F841
+
+    obs, _ = env.get_observations()
+    stream = None
+    if args_cli.state_stream:
+        from legged_lab.utils.gl165_viewer_stream import Gl165ViewerStream
+
+        stream = Gl165ViewerStream(args_cli.state_stream, resume_path)
+        stream.publish(env)
+
+    while simulation_app.is_running():
+        step_start = time.perf_counter()
+        if stream:
+            paused, reset = stream.controls()
+            if reset:
+                with torch.inference_mode():
+                    env.reset(torch.arange(env.num_envs, device=env.device))
+                    obs, _ = env.get_observations()
+                stream.last_reset = "manual"
+                stream.publish(env)
+            if paused:
+                time.sleep(env.step_dt)
+                continue
+        with torch.inference_mode():
+            actions = policy(obs)
+            obs, _, done, _ = env.step(actions)
+        if stream:
+            stream.publish(env, done)
+        if args_cli.real_time:
+            time.sleep(max(0.0, env.step_dt - (time.perf_counter() - step_start)))
+
+
+if __name__ == "__main__":
+    play()
+    simulation_app.close()

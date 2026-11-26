@@ -1,0 +1,26 @@
+{
+  "training_run": "2026-11-25_23-07-34_stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000",
+  "checkpoint": "model_37000.pt",
+  "checkpoint_sha256": "cbf9d4e00051552a9dd8058b47653e85f2a23cafd02a7974093e4f56fe1d3241",
+  "controller_profile": "elf3_gains_gl165_xml_armature_fixed_head_20261117_5ms",
+  "onnx_input": [
+    1,
+    540
+  ],
+  "onnx_output": [
+    1,
+    15
+  ],
+  "reference_validation_samples": 128,
+  "maximum_absolute_error": 5.7220458984375e-06,
+  "all_29_gains_match_runtime_audit": true,
+  "physics_profile": "gl165_urdf_261123_2_5ms",
+  "mujoco_xml_matches_training_snapshot": true,
+  "source_xml_sha256": "c6e7493dbeb2fc8fb83116967eb62592a32d20948de1f1dc2e331b63b666bcd0",
+  "arm_database": "arm_disturbance_overhead_261123_2_5ms_stance8cm.npz",
+  "arm_database_sha256": "935968b5d977fdabb3dba3322577e34e90800be67b3cc23cbd974a9702c566ad",
+  "checkpoint_iteration": 37000,
+  "cpu_validation_samples": 129,
+  "torchscript_max_absolute_error": 0.0,
+  "onnxruntime_max_absolute_error": 2.288818359375e-05
+}

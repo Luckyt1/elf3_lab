@@ -1,0 +1,283 @@
+{
+  "robot": "GL-165",
+  "checkpoint": "model_37000.pt",
+  "checkpoint_iteration": 37000,
+  "completed_iterations": 37001,
+  "control_dt_s": 0.02,
+  "physics_dt_s": 0.005,
+  "decimation": 4,
+  "observation_dim": 540,
+  "observation_frame_dim": 54,
+  "history_length": 10,
+  "history_order": "oldest_to_newest",
+  "history_reset": "repeat_first_observation",
+  "observation_dtype": "float32",
+  "observation_clipping": 100.0,
+  "observation_scales": {
+    "lin_vel": 1.0,
+    "ang_vel": 1.0,
+    "projected_gravity": 1.0,
+    "commands": 1.0,
+    "joint_pos": 1.0,
+    "joint_vel": 0.1,
+    "actions": 1.0,
+    "height_scan": 1.0
+  },
+  "empirical_normalization": false,
+  "actor_observation_layout_per_frame": [
+    {
+      "name": "base_angular_velocity_body",
+      "slice": [
+        0,
+        3
+      ]
+    },
+    {
+      "name": "projected_gravity_body",
+      "slice": [
+        3,
+        6
+      ]
+    },
+    {
+      "name": "velocity_command_zero",
+      "slice": [
+        6,
+        9
+      ]
+    },
+    {
+      "name": "policy_joint_position_minus_nominal",
+      "slice": [
+        9,
+        24
+      ]
+    },
+    {
+      "name": "policy_joint_velocity_scaled",
+      "slice": [
+        24,
+        39
+      ]
+    },
+    {
+      "name": "previous_raw_policy_action",
+      "slice": [
+        39,
+        54
+      ]
+    }
+  ],
+  "action_dim": 15,
+  "output_semantics": "deterministic raw actions; nominal + action * scale, clipped to recorded XML-derived soft position limits",
+  "clip_actions": null,
+  "additional_waist_limits": null,
+  "policy_joint_order": [
+    "lhip_y_joint",
+    "rhip_y_joint",
+    "waist_z_joint",
+    "lhip_x_joint",
+    "rhip_x_joint",
+    "waist_x_joint",
+    "lhip_z_joint",
+    "rhip_z_joint",
+    "waist_y_joint",
+    "lknee_y_joint",
+    "rknee_y_joint",
+    "lankle_y_joint",
+    "rankle_y_joint",
+    "lankle_x_joint",
+    "rankle_x_joint"
+  ],
+  "action_scale_rad": [
+    0.21299999952316284,
+    0.21299999952316284,
+    0.21299999952316284,
+    0.21299999952316284,
+    0.21299999952316284,
+    0.15399999916553497,
+    0.23100000619888306,
+    0.23100000619888306,
+    0.23100000619888306,
+    0.21299999952316284,
+    0.21299999952316284,
+    0.37299999594688416,
+    0.37299999594688416,
+    0.23000000417232513,
+    0.23000000417232513
+  ],
+  "default_policy_joint_pos_rad": [
+    -0.31774789094924927,
+    -0.31774789094924927,
+    0.0,
+    0.008487884886562824,
+    -0.008487884886562824,
+    0.0,
+    -0.061129432171583176,
+    0.061129432171583176,
+    0.0,
+    0.5992379188537598,
+    0.5992379188537598,
+    -0.30120283365249634,
+    -0.30120283365249634,
+    -0.017184248194098473,
+    0.017184248194098473
+  ],
+  "arm_joint_order": [
+    "lshouder_y_joint",
+    "lshouder_x_joint",
+    "lshouder_z_joint",
+    "lelbow_y_joint",
+    "lwrist_x_joint",
+    "lwrist_y_joint",
+    "lwrist_z_joint",
+    "rshouder_y_joint",
+    "rshouder_x_joint",
+    "rshouder_z_joint",
+    "relbow_y_joint",
+    "rwrist_x_joint",
+    "rwrist_y_joint",
+    "rwrist_z_joint"
+  ],
+  "default_arm_joint_pos_rad": [
+    0.0,
+    0.10000000149011612,
+    0.0,
+    1.100000023841858,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -0.10000000149011612,
+    0.0,
+    1.100000023841858,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "joint_controller_groups": {
+    "hip_pitch_roll": {
+      "regex": "[lr]hip_[xy]_joint",
+      "kp": 176.421,
+      "kd": 11.231,
+      "action_scale_rad": 0.213
+    },
+    "hip_yaw": {
+      "regex": "[lr]hip_z_joint",
+      "kp": 54.224,
+      "kd": 3.452,
+      "action_scale_rad": 0.231
+    },
+    "knees": {
+      "regex": "[lr]knee_y_joint",
+      "kp": 176.421,
+      "kd": 11.231,
+      "action_scale_rad": 0.213
+    },
+    "ankle_pitch": {
+      "regex": "[lr]ankle_y_joint",
+      "kp": 33.493,
+      "kd": 2.132,
+      "action_scale_rad": 0.373
+    },
+    "ankle_roll": {
+      "regex": "[lr]ankle_x_joint",
+      "kp": 21.771,
+      "kd": 1.386,
+      "action_scale_rad": 0.23
+    },
+    "waist_yaw": {
+      "regex": "waist_z_joint",
+      "kp": 176.421,
+      "kd": 11.231,
+      "action_scale_rad": 0.213
+    },
+    "waist_pitch": {
+      "regex": "waist_y_joint",
+      "kp": 108.448,
+      "kd": 6.904,
+      "action_scale_rad": 0.231
+    },
+    "waist_roll": {
+      "regex": "waist_x_joint",
+      "kp": 162.672,
+      "kd": 10.356,
+      "action_scale_rad": 0.154
+    },
+    "shoulder_pitch_roll": {
+      "regex": "[lr]shouder_[xy]_joint",
+      "kp": 54.224,
+      "kd": 3.452,
+      "action_scale_rad": null
+    },
+    "shoulder_yaw": {
+      "regex": "[lr]shouder_z_joint",
+      "kp": 16.747,
+      "kd": 1.066,
+      "action_scale_rad": null
+    },
+    "elbows": {
+      "regex": "[lr]elbow_y_joint",
+      "kp": 54.224,
+      "kd": 3.452,
+      "action_scale_rad": null
+    },
+    "wrists": {
+      "regex": "[lr]wrist_[xyz]_joint",
+      "kp": 16.747,
+      "kd": 1.066,
+      "action_scale_rad": null
+    }
+  },
+  "arm_motion_source": "../legged_lab/envs/gl_165/datasets/arm_disturbance_overhead_261123_2_5ms_stance8cm.npz",
+  "arm_motion_target_provided_externally": true,
+  "arm_segment_duration_s": 0.6,
+  "base_height_target_m": 0.9952980628766913,
+  "onnx_input": {
+    "name": "obs",
+    "shape": [
+      1,
+      540
+    ]
+  },
+  "onnx_output": {
+    "name": "actions",
+    "shape": [
+      1,
+      15
+    ]
+  },
+  "observation_implementation": "../legged_lab/envs/gl_165/stand_env.py",
+  "training_run": "2026-11-25_23-07-34_stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000",
+  "checkpoint_sha256": "cbf9d4e00051552a9dd8058b47653e85f2a23cafd02a7974093e4f56fe1d3241",
+  "controller_profile": "elf3_gains_gl165_xml_armature_fixed_head_20261117_5ms",
+  "training_actuator": "ImplicitActuatorCfg",
+  "arm_motion_sha256": "935968b5d977fdabb3dba3322577e34e90800be67b3cc23cbd974a9702c566ad",
+  "base_com_offset_m": [
+    8.83597909304825e-05,
+    -1.54557940467261e-08,
+    -0.0607463306094482
+  ],
+  "base_linear_velocity_reference": "base_link_center_of_mass_expressed_in_base_link",
+  "active_joints": 29,
+  "fixed_joints": [
+    "head_z_joint",
+    "head_y_joint"
+  ],
+  "head_control": "two fixed joints at zero, as authored in the user-supplied XML",
+  "physics_profile": "gl165_urdf_261123_2_5ms",
+  "stance_recovery": {
+    "enter_speed_m_s": 0.35,
+    "step_speed_m_s": 0.16,
+    "enter_tilt_rad": 0.15,
+    "enter_tilt_rate_rad_s": 0.7,
+    "settle_speed_m_s": 0.12,
+    "settle_tilt_rad": 0.13,
+    "settle_tilt_rate_rad_s": 0.45,
+    "foot_load_n": 40.0,
+    "settle_s": 0.4,
+    "release_grace_s": 2.0
+  },
+  "observe_arm_motion": false,
+  "observe_standing_state": false
+}

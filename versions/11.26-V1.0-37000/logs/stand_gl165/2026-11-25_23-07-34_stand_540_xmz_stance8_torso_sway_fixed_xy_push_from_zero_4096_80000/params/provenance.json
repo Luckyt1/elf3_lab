@@ -1,0 +1,8 @@
+{
+  "source_snapshot_sha256": "b348d72897b33115d8a73c71dce26ff45a4683aaea01ed48b5c32a10790109d4",
+  "fresh_optimizer": true,
+  "starting_iteration": 0,
+  "arm_database_sha256": "935968b5d977fdabb3dba3322577e34e90800be67b3cc23cbd974a9702c566ad",
+  "source_xml_sha256": "c6e7493dbeb2fc8fb83116967eb62592a32d20948de1f1dc2e331b63b666bcd0",
+  "source_urdf_sha256": "4d277edbd99959f40e767fbd9368738e138bb706271eb01de47dc41e2afd20bd"
+}

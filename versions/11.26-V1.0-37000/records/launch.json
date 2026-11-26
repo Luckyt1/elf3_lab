@@ -1,0 +1,26 @@
+{
+  "pid": 847223,
+  "run_name": "stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000",
+  "started_at": "2026-11-25T23:07:17+08:00",
+  "command": [
+    "/home/cheng/elf3lab/jili/elf3_lab/scripts/gl165.sh",
+    "train",
+    "--headless",
+    "--num_envs",
+    "4096",
+    "--seed",
+    "42",
+    "--xmz-standing",
+    "--max_iterations",
+    "80000",
+    "--run_name",
+    "stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000"
+  ],
+  "log": "/home/cheng/elf3lab/jili/elf3_lab/logs/stand_gl165/train_stand_540_xmz_stance8_torso_sway_fixed_xy_push_from_zero_4096_80000_20261125_230717.log",
+  "num_envs": 4096,
+  "seed": 42,
+  "total_iterations": 80000,
+  "starting_iteration": 0,
+  "previous_pid": 768916,
+  "parent_checkpoint": null
+}
